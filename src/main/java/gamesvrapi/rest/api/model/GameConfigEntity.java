@@ -30,10 +30,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class GameConfigEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
-
+    @GeneratedValue(strategy = IDENTITY)
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="GAME_ID")

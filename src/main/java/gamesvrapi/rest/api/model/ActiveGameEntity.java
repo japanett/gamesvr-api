@@ -1,7 +1,14 @@
 package gamesvrapi.rest.api.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,6 +28,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "activeGame")
 @Entity(name = "ActiveGame")
 public class ActiveGameEntity {
@@ -37,4 +45,12 @@ public class ActiveGameEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="GAMECONFIG_ID")
     private GameConfigEntity gameConfig;
+
+    @CreatedDate
+    @Column(name = "dat_creation", nullable = false, updatable = false)
+    private LocalDateTime creationDate;
+
+    @LastModifiedDate
+    @Column(name = "dat_update", nullable = false)
+    private LocalDateTime updateDate;
 }
