@@ -14,8 +14,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import gamesvrapi.rest.api.service.UserDetailsServiceImpl;
 
-import static gamesvrapi.rest.api.security.SecurityConstants.SIGN_UP_ADMIN;
-import static gamesvrapi.rest.api.security.SecurityConstants.SIGN_UP_THERAPIST;
+import static gamesvrapi.rest.api.security.SecurityConstants.CREATE_THERAPIST;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -30,8 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_THERAPIST).permitAll()
-                .antMatchers(HttpMethod.POST, SIGN_UP_ADMIN).permitAll()
+                .antMatchers(HttpMethod.POST, CREATE_THERAPIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

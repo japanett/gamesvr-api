@@ -16,12 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TherapistService {
 
-    private BCryptPasswordEncoder bcrypt;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final TherapistRepository therapistRepository;
 
     public TherapistEntity createTherapist(final TherapistEntity therapist) {
-        therapist.setPassword(bcrypt.encode(therapist.getPassword()));
+        log.info("teste");
+        log.info("{}", therapist);
+        log.debug(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
+        therapist.setPassword(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
         return therapistRepository.save(therapist);
     }
 
