@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -42,7 +43,7 @@ public class TherapistEntity {
     private LocalDateTime creationDate;
 
     @Column(name = "login", nullable = false, updatable = false, unique = true)
-    private Long login;
+    private String login;
 
     @Column(name = "name", nullable = false)
     private String name;

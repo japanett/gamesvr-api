@@ -41,7 +41,7 @@ public class GameConfigEntity {
     @Column(name = "imersive", nullable = false)
     private Boolean imersive;
 
-    @OneToMany(mappedBy = "stages", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gameConfig", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StageEntity> stages;
 
     @PrePersist
