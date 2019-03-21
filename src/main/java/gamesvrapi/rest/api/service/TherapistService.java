@@ -1,5 +1,6 @@
 package gamesvrapi.rest.api.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TherapistService {
 
+    private BCryptPasswordEncoder bcrypt;
+
     private final TherapistRepository therapistRepository;
 
     public TherapistEntity createTherapist(final TherapistEntity therapist) {
-        // Logar objeto
+        therapist.setPassword(bcrypt.encode(therapist.getPassword()));
         return therapistRepository.save(therapist);
     }
 
@@ -32,7 +35,7 @@ public class TherapistService {
 
     public List<TherapistEntity> getAllTherapists() {
         final var therapists = this.therapistRepository.findAll(); //.stream().findAny().orElseThrow(() -> new ResourceNotFoundException("teste"));
-
+        log.debug("{}", therapists.stream().findFirst());
         if (therapists.isEmpty()) {
             log.warn("TherapistService, m=getAllTherapist, No Therapists found!");
             throw new ResourceNotFoundException("TherapistService, m=getAllTherapist, e: ResourceNotFound!");

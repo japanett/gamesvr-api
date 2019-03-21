@@ -12,4 +12,6 @@ public interface TherapistRepository extends JpaRepository<TherapistEntity, Long
 
     Long countPatientsById(Long id);
 
+    TherapistEntity findByUsername(String username);
+
 }
