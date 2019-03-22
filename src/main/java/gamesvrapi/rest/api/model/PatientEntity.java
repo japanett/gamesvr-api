@@ -58,7 +58,7 @@ public class PatientEntity {
     private LocalDateTime updateDate;
 
     @Column(name = "identifier", nullable = false, updatable = false, unique = true)
-    private Long identifier;
+    private String identifier;
 
     @Column(name = "name", nullable = false)
     private String name;

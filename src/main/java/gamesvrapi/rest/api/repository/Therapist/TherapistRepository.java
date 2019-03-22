@@ -10,8 +10,9 @@ import gamesvrapi.rest.api.model.TherapistEntity;
 @Repository
 public interface TherapistRepository extends JpaRepository<TherapistEntity, Long> {
 
-    Long countPatientsById(Long id);
+    Long countPatientsById(final Long id);
 
-    TherapistEntity findByUsername(String username);
+    TherapistEntity findByUsername(final String username);
 
+    TherapistEntity findByUsernameAndPassword(final String username, final String password);
 }

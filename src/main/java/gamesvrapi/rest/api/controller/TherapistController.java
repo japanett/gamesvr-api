@@ -24,8 +24,20 @@ public class TherapistController {
 
     private final TherapistService service;
 
+    //@RequestHeader("Authorization") final String token
     @GetMapping
     public List<TherapistEntity> getAllTherapists() {
+//        String[] splitted = token.split(" ");
+//        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+//        String decodedToken1 = StringUtils.newStringUtf8(Base64.decodeBase64(JWT.decode(splitted[1]).getPayload()));
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            Map<String,Object> map = mapper.readValue(decodedToken1, Map.class);
+////            log.info(map.get());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         return this.service.getAllTherapists();
     }
 

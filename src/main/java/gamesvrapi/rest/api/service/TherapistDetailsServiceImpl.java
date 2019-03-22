@@ -12,10 +12,10 @@ import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
 import static java.util.Collections.emptyList;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class TherapistDetailsServiceImpl implements UserDetailsService {
     private TherapistRepository therapistRepository;
 
-    public UserDetailsServiceImpl(TherapistRepository therapistRepository) {
+    public TherapistDetailsServiceImpl(TherapistRepository therapistRepository) {
         this.therapistRepository = therapistRepository;
     }
 
