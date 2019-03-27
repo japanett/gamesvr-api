@@ -37,7 +37,6 @@ dependencies {
 	compile("org.hsqldb:hsqldb")
 	compile("com.auth0:java-jwt:3.4.0")
 	compile('javax.xml.bind:jaxb-api:2.3.0')
-	compile "org.mapstruct:mapstruct:1.2.0.Final"
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'

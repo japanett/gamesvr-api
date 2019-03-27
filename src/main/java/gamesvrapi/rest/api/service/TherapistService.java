@@ -1,5 +1,7 @@
 package gamesvrapi.rest.api.service;
 
+import gamesvrapi.rest.api.model.PatientEntity;
+import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +25,25 @@ public class TherapistService {
 
     private final TherapistRepository therapistRepository;
 
-    public TherapistEntity createTherapist(final TherapistEntity therapist) {
+    private final TherapistPatientEntityRepository therapistPatientEntityRepository;
+
+    public TherapistEntity createTherapist (final TherapistEntity therapist) {
         log.info("============== USER CREATED ==============");
         log.info("{}", therapist);
         therapist.setPassword(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
         return therapistRepository.save(therapist);
     }
 
-    public TherapistEntity getTherapistById(final Long id) {
+    public TherapistEntity getTherapist (final String token) {
+        long id = JWTService.getIdFromToken(token);
         return therapistRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("m=getTherapistById, id : {}, e: ResourceNotFound", id);
-                    return new ResourceNotFoundException("m=getTherapistById, id:"+ id + ", e: ResourceNotFound");
+                    return new ResourceNotFoundException("m=getTherapistById, id:" + id + ", e: ResourceNotFound");
                 });
     }
 
-    public TokenDTO login(final String username, final String password) {
+    public TokenDTO login (final String username, final String password) {
         TherapistEntity therapist = therapistRepository.findByUsername(username);
         try {
             if (!this.bCryptPasswordEncoder.matches(password, therapist.getPassword())) {
@@ -52,8 +57,16 @@ public class TherapistService {
                 .build();
     }
 
-    public List<TherapistEntity> getAllTherapists() {
-        final var therapists = this.therapistRepository.findAll(); //.stream().findAny().orElseThrow(() -> new ResourceNotFoundException("teste"));
+    // TO DO
+    public PatientEntity createPatient (final PatientEntity patient) {
+        log.info("============== PATIENT CREATED ==============");
+        log.info("{}", patient);
+//        patient.setPassword(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
+        return therapistPatientEntityRepository.save(patient);
+    }
+
+    public List<TherapistEntity> getAllTherapists () {
+        final var therapists = this.therapistRepository.findAll();
         log.debug("{}", therapists.stream().findFirst());
         if (therapists.isEmpty()) {
             log.warn("TherapistService, m=getAllTherapist, No Therapists found!");

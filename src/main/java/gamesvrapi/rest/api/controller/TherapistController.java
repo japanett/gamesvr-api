@@ -1,9 +1,14 @@
 package gamesvrapi.rest.api.controller;
 
+import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
+
+import gamesvrapi.rest.api.model.PatientEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,30 +30,39 @@ public class TherapistController {
     private final TherapistService service;
 
     //@RequestHeader("Authorization") final String token
-    @GetMapping
-    public List<TherapistEntity> getAllTherapists() {
-//        String[] splitted = token.split(" ");
+//    @GetMapping
+//    public List<TherapistEntity> getAllTherapists() {
+////        String[] splitted = token.split(" ");
+////        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+////        String decodedToken1 = StringUtils.newStringUtf8(Base64.decodeBase64(JWT.decode(splitted[1]).getPayload()));
+////        ObjectMapper mapper = new ObjectMapper();
+////        try {
+////            Map<String,Object> map = mapper.readValue(decodedToken1, Map.class);
+//////            log.info(map.get());
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
 //        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-//        String decodedToken1 = StringUtils.newStringUtf8(Base64.decodeBase64(JWT.decode(splitted[1]).getPayload()));
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            Map<String,Object> map = mapper.readValue(decodedToken1, Map.class);
-////            log.info(map.get());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        return this.service.getAllTherapists();
-    }
+//        return this.service.getAllTherapists();
+//    }
 
     @PostMapping
     public TherapistEntity createTherapist(@Valid @RequestBody final TherapistEntity therapist) {
         return this.service.createTherapist(therapist);
     }
 
-    @GetMapping("/{id}")
-    public TherapistEntity getTherapistById(@PathVariable("id") final Long id) {
-        return this.service.getTherapistById(id);
+    @GetMapping
+    public TherapistEntity getTherapist(@Valid @RequestHeader(HEADER_STRING) final String token) {
+        return this.service.getTherapist(token);
     }
 
+    @PatchMapping
+    public TherapistEntity updateTherapist(@Valid @RequestHeader(HEADER_STRING) final String token) {
+        // TO DO
+    }
+
+    @PostMapping
+    public PatientEntity createPatient() {
+        // TO DO
+    }
 }
