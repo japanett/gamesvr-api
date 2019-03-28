@@ -1,5 +1,7 @@
 package gamesvrapi.rest.api.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,8 +21,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,10 +32,11 @@ public class GameConfigEntity {
     @Id
     @Column(name = "id", updatable = false)
     private Long id;
+
     @GeneratedValue(strategy = IDENTITY)
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="GAME_ID")
+    @JoinColumn(name = "GAME_ID")
     private GameEntity game;
 
     @Column(name = "imersive", nullable = false)
@@ -45,7 +46,7 @@ public class GameConfigEntity {
     private List<StageEntity> stages;
 
     @PrePersist
-    public void preInsert() {
+    public void preInsert () {
         if (this.imersive == null) {
             this.setImersive(Boolean.TRUE);
         }

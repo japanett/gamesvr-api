@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.EXPECTATION_FAILED)
 public class ExpectationFailedException extends RuntimeException {
-    public ExpectationFailedException(final String message) {
+
+    public ExpectationFailedException (final String message) {
         super(String.format(message));
     }
 }

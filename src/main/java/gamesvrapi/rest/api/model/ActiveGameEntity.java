@@ -1,8 +1,6 @@
 package gamesvrapi.rest.api.model;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDateTime;
 
@@ -21,8 +19,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Builder
@@ -39,11 +38,11 @@ public class ActiveGameEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="PATIENT_ID")
+    @JoinColumn(name = "PATIENT_ID")
     private PatientEntity patient;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="GAMECONFIG_ID")
+    @JoinColumn(name = "GAMECONFIG_ID")
     private GameConfigEntity gameConfig;
 
     @CreatedDate

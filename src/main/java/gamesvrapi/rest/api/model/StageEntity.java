@@ -1,5 +1,7 @@
 package gamesvrapi.rest.api.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +17,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class StageEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="GAMECONFIG_ID")
+    @JoinColumn(name = "GAMECONFIG_ID")
     private GameConfigEntity gameConfig;
 
     @Column(name = "step", nullable = false)

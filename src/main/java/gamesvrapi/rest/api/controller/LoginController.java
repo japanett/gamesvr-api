@@ -23,7 +23,7 @@ public class LoginController {
     private final AuthenticationMapper mapper;
 
     @PostMapping("/therapist")
-    public AuthenticationResponse login(@RequestBody final TherapistLoginRequest therapistRequest) {
+    public AuthenticationResponse login (@RequestBody final TherapistLoginRequest therapistRequest) {
         return this.mapper.toResponse(this.therapistService.login(
                 therapistRequest.getUsername(),
                 therapistRequest.getPassword()

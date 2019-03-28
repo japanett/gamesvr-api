@@ -9,16 +9,16 @@ public enum PatientHandEnum {
 
     private final Integer code;
 
-    PatientHandEnum(final Integer code, final String description) {
+    PatientHandEnum (final Integer code, final String description) {
         this.description = description;
         this.code = code;
     }
 
-    public String getDescription() {
+    public String getDescription () {
         return description;
     }
 
-    public int getCode() {
+    public int getCode () {
         return code;
     }
 }
