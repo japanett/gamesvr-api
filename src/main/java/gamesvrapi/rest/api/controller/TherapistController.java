@@ -4,11 +4,15 @@ import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
 
 import javax.validation.Valid;
 
+import gamesvrapi.rest.api.model.PatientEntity;
 import gamesvrapi.rest.api.model.TherapistEntity;
+import gamesvrapi.rest.api.service.TherapistPatientService;
 import gamesvrapi.rest.api.service.TherapistService;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/therapist")
 public class TherapistController {
 
-    private final TherapistService service;
+    private final TherapistService therapistService;
+
+    private final TherapistPatientService therapistPatientService;
 
     //@RequestHeader("Authorization") final String token
     //    @GetMapping
@@ -42,24 +48,26 @@ public class TherapistController {
     //        return this.service.getAllTherapists();
     //    }
 
-    @PostMapping
-    public TherapistEntity createTherapist (@Valid @RequestBody final TherapistEntity therapist) {
-        return this.service.createTherapist(therapist);
+    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TherapistEntity createTherapist (@NonNull @Valid @RequestBody final TherapistEntity therapist) {
+        return this.therapistService.createTherapist(therapist);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity getTherapist (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.service.getTherapist(token);
+        return this.therapistService.getTherapist(token);
     }
 
-    @PatchMapping //Se eu mandar sem email, a execução continua como o email = nulo, tratar isso
+    //Se eu mandar sem email, a execução continua como o email = nulo, tratar isso
+    @PatchMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity patchTherapist (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @Valid @RequestBody final PatchTherapistRequest req) {
-        return this.service.patchTherapist(token, req);
+            @NonNull @Valid @RequestBody final PatchTherapistRequest req) {
+        return this.therapistService.patchTherapist(token, req);
     }
 
-    //    @PostMapping
-    //    public PatientEntity createPatient () {
-    // TO DO
-    //    }
+    @PostMapping(path = "/patient",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public PatientEntity createPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @NonNull @Valid @RequestBody final PatientEntity patient) {
+        return this.therapistPatientService.createPatient(token, patient);
+    }
 }

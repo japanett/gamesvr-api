@@ -1,9 +1,8 @@
 package gamesvrapi.rest.api.model;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,14 +11,15 @@ import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PatientHandEnum;
 import gamesvrapi.rest.api.enums.SexEnum;
 import lombok.AllArgsConstructor;
@@ -40,12 +40,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class PatientEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", updatable = false)
-    private Long id;
+    @Size(max = 6)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "THERAPIST_ID")
+    @JoinColumn(name = "THERAPIST_ID", nullable = false)
     private TherapistEntity therapist;
 
     @CreatedDate
@@ -55,9 +55,6 @@ public class PatientEntity {
     @LastModifiedDate
     @Column(name = "dat_update", nullable = false)
     private LocalDateTime updateDate;
-
-    @Column(name = "identifier", nullable = false, updatable = false, unique = true)
-    private String identifier;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -99,6 +96,21 @@ public class PatientEntity {
         if (this.active == null) {
             this.setActive(Boolean.TRUE);
         }
+        if (this.id == null) {
+            this.setId(UUID.randomUUID().toString().substring(0, 6));
+        } else {
+            this.setId(this.getId().substring(0, 6));
+        }
+    }
+
+    @JsonIgnore
+    public TherapistEntity getTherapist() {
+        return therapist;
+    }
+
+    @JsonIgnore
+    public void setTherapist(TherapistEntity therapist) {
+        this.therapist = therapist;
     }
 
 }
