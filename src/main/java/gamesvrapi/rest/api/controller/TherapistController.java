@@ -13,6 +13,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,11 @@ public class TherapistController {
         return this.therapistService.getTherapist(token);
     }
 
+    @DeleteMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TherapistEntity deleteTherapist (@Valid @RequestHeader(HEADER_STRING) final String token) {
+        return this.therapistService.deleteTherapist(token);
+    }
+
     //Se eu mandar sem email, a execução continua como o email = nulo, tratar isso
     @PatchMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity patchTherapist (@Valid @RequestHeader(HEADER_STRING) final String token,
@@ -65,9 +71,10 @@ public class TherapistController {
         return this.therapistService.patchTherapist(token, req);
     }
 
-    @PostMapping(path = "/patient",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PatientEntity createPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
             @NonNull @Valid @RequestBody final PatientEntity patient) {
         return this.therapistPatientService.createPatient(token, patient);
     }
+
 }

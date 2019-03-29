@@ -61,6 +61,12 @@ public class TherapistService {
         return tokenInterceptorService.translateTherapistToken(token);
     }
 
+    public TherapistEntity deleteTherapist(final String token) {
+        TherapistEntity therapist =tokenInterceptorService.translateTherapistToken(token);
+        therapistRepository.delete(therapist);
+        return therapist;
+    }
+
     @Transactional
     public TherapistEntity patchTherapist (final String token,
             final PatchTherapistRequest req) {
