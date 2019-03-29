@@ -2,7 +2,6 @@ package gamesvrapi.rest.api.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -95,11 +94,6 @@ public class PatientEntity {
         }
         if (this.active == null) {
             this.setActive(Boolean.TRUE);
-        }
-        if (this.id == null) {
-            this.setId(UUID.randomUUID().toString().substring(0, 6));
-        } else {
-            this.setId(this.getId().substring(0, 6));
         }
     }
 

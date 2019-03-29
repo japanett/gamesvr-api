@@ -1,8 +1,9 @@
 package gamesvrapi.rest.api.service;
 
+import java.util.UUID;
+
 import gamesvrapi.rest.api.model.PatientEntity;
 import gamesvrapi.rest.api.model.TherapistEntity;
-import gamesvrapi.rest.api.repository.Patient.PatientRepository;
 import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,22 +17,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class TherapistPatientService {
 
     @Autowired
-    private final PatientRepository patientRepository;
-
-    @Autowired
     private final TokenInterceptorService tokenInterceptorService;
 
     @Autowired
     private final TherapistPatientEntityRepository therapistPatientEntityRepository;
 
-    // Do a method to check if the Id already exists, if it does, generate another one and THEN save the patient
     @Transactional
     public PatientEntity createPatient (final String token, final PatientEntity patient) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
         patient.setTherapist(therapist);
-        patient.setId("d9fc91");
-        patient.setActive(Boolean.TRUE);
-        return patientRepository.save(patient);
+        patient.setId(generateId());
+        return therapistPatientEntityRepository.save(patient);
+
+    }
+
+    private String generateId () {
+        String id = (UUID.randomUUID().toString().substring(0, 6));
+        therapistPatientEntityRepository.findById(id)
+                .ifPresent(entity -> {
+                    this.generateId();
+                });
+        return id;
     }
 
 }

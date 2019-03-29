@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TherapistPatientEntityRepository extends JpaRepository<PatientEntity, Long> {
 
     Optional<PatientEntity> findByTherapistId (long therapistId);
+
+    Optional<PatientEntity> findById (String id);
 }
