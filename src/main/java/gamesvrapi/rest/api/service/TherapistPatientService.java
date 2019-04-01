@@ -30,7 +30,6 @@ public class TherapistPatientService {
         patient.setTherapist(therapist);
         patient.setId(generateId());
         return therapistPatientEntityRepository.save(patient);
-
     }
 
     public List<PatientEntity> getPatients (final String token) {
@@ -48,6 +47,25 @@ public class TherapistPatientService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("TherapistPatientService, m=getPatient, patientId=" + patientId)
                 );
+    }
+
+    @Transactional
+    public PatientEntity updatePatient (final String token, final String patientId,
+            final PatientEntity patient) {
+        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+        PatientEntity updatedPatient = therapistPatientEntityRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "TherapistPatientService, m=updatePatient, patientId=" + patientId));
+
+        updatedPatient.setAge(patient.getAge());
+        updatedPatient.setDominantHand(patient.getDominantHand());
+        updatedPatient.setGmfcsLevel(patient.getGmfcsLevel());
+        updatedPatient.setName(patient.getName());
+        updatedPatient.setObjective(patient.getObjective());
+        updatedPatient.setPatology(patient.getPatology());
+        updatedPatient.setSex(patient.getSex());
+
+        return therapistPatientEntityRepository.save(updatedPatient);
     }
 
     private String generateId () {
