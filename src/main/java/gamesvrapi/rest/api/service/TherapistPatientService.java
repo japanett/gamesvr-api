@@ -1,7 +1,9 @@
 package gamesvrapi.rest.api.service;
 
+import java.util.List;
 import java.util.UUID;
 
+import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.model.PatientEntity;
 import gamesvrapi.rest.api.model.TherapistEntity;
 import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
@@ -29,6 +31,23 @@ public class TherapistPatientService {
         patient.setId(generateId());
         return therapistPatientEntityRepository.save(patient);
 
+    }
+
+    public List<PatientEntity> getPatients (final String token) {
+        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+        return therapistPatientEntityRepository.findByTherapistId(therapist.getId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Therapist " + therapist.getName() + " has no patients !")
+                );
+    }
+
+    public PatientEntity getPatient (final String token,
+            final String patientId) {
+        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+        return therapistPatientEntityRepository.findById(patientId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("TherapistPatientService, m=getPatient, patientId=" + patientId)
+                );
     }
 
     private String generateId () {
