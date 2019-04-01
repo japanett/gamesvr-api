@@ -75,26 +75,9 @@ public class TherapistController {
     }
 
     @PutMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public PatientEntity patchPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
+    public PatientEntity putPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
             @RequestParam @NonNull final String patientId,
             @RequestBody @NonNull final PatientEntity patient) {
         return this.therapistPatientService.updatePatient(token, patientId, patient);
     }
-
-    //@RequestHeader("Authorization") final String token
-    //    @GetMapping
-    //    public List<TherapistEntity> getAllTherapists() {
-    ////        String[] splitted = token.split(" ");
-    ////        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    ////        String decodedToken1 = StringUtils.newStringUtf8(Base64.decodeBase64(JWT.decode(splitted[1]).getPayload()));
-    ////        ObjectMapper mapper = new ObjectMapper();
-    ////        try {
-    ////            Map<String,Object> map = mapper.readValue(decodedToken1, Map.class);
-    //////            log.info(map.get());
-    ////        } catch (IOException e) {
-    ////            e.printStackTrace();
-    ////        }
-    //        log.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    //        return this.service.getAllTherapists();
-    //    }
 }

@@ -1,5 +1,7 @@
 package gamesvrapi.rest.api.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Builder
@@ -26,10 +26,7 @@ public class GameEntity {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "gameIdentifier", nullable = false, unique = true)
-    private Integer gameIdentifier;
 
 }

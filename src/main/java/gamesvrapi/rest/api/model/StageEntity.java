@@ -31,8 +31,8 @@ public class StageEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GAMECONFIG_ID")
-    private GameConfigEntity gameConfig;
+    @JoinColumn(name = "THERAPY_ID")
+    private TherapyEntity therapy;
 
     @Column(name = "step", nullable = false)
     private Integer step;

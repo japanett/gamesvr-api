@@ -79,7 +79,7 @@ public class PatientEntity {
     private String objective;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ActiveGameEntity> activeGames;
+    private List<TherapyEntity> therapies;
 
     @Column(name = "active", nullable = false)
     private Boolean active;

@@ -1,5 +1,11 @@
 package gamesvrapi.rest.api.security;
 
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static gamesvrapi.rest.api.security.SecurityConstants.EXPIRATION_TIME;
+import static gamesvrapi.rest.api.security.SecurityConstants.SECRET;
+
+import java.util.Date;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -7,16 +13,10 @@ import gamesvrapi.rest.api.exceptions.EncodeTokenFailedException;
 import gamesvrapi.rest.api.exceptions.ExpiredTokenException;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
-
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static gamesvrapi.rest.api.security.SecurityConstants.EXPIRATION_TIME;
-import static gamesvrapi.rest.api.security.SecurityConstants.SECRET;
-
 @Slf4j
 public class JWTService {
 
-    public static String generateTherapistToken (final long id) {
+    public static String generateToken (final long id) {
         try {
             return JWT.create()
                     .withSubject(Long.toString(id))
