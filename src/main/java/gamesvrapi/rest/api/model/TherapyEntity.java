@@ -1,6 +1,8 @@
 package gamesvrapi.rest.api.model;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,16 +17,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import gamesvrapi.rest.api.enums.PlatformEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Builder
@@ -43,8 +44,8 @@ public class TherapyEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "imersive", nullable = false)
-    private Boolean imersive;
+    @Column(name = "platform", nullable = false)
+    private PlatformEnum platform;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PATIENT_ID")
@@ -64,10 +65,4 @@ public class TherapyEntity {
     @Column(name = "dat_update", nullable = false)
     private LocalDateTime updateDate;
 
-    @PrePersist
-    public void preInsert () {
-        if (this.imersive == null) {
-            this.setImersive(Boolean.TRUE);
-        }
-    }
 }

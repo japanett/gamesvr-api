@@ -1,16 +1,17 @@
 package gamesvrapi.rest.api.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
 import gamesvrapi.rest.api.model.TherapistEntity;
 import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -41,6 +42,7 @@ public class TherapistService {
         return tokenInterceptorService.translateTherapistToken(token);
     }
 
+    @Transactional
     public TherapistEntity deleteTherapist (final String token) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
         therapistRepository.delete(therapist);

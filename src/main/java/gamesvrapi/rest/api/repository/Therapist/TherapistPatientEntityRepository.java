@@ -13,4 +13,5 @@ public interface TherapistPatientEntityRepository extends JpaRepository<PatientE
     Optional<List<PatientEntity>> findByTherapistId (long therapistId);
 
     Optional<PatientEntity> findById (String id);
+
 }
