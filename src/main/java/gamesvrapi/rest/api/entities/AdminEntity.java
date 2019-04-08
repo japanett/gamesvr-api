@@ -1,18 +1,14 @@
-package gamesvrapi.rest.api.model;
+package gamesvrapi.rest.api.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -27,9 +23,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "therapist")
-@Entity(name = "Therapist")
-public class TherapistEntity {
+@Table(name = "admin")
+@Entity(name = "Admin")
+public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -52,6 +48,4 @@ public class TherapistEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PatientEntity> patients;
 }

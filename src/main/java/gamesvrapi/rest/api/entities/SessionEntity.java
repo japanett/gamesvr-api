@@ -1,4 +1,4 @@
-package gamesvrapi.rest.api.model;
+package gamesvrapi.rest.api.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

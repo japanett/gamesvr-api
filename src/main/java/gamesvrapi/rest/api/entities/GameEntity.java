@@ -1,16 +1,21 @@
-package gamesvrapi.rest.api.model;
+package gamesvrapi.rest.api.entities;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import gamesvrapi.rest.api.enums.PlatformEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,5 +52,9 @@ public class GameEntity {
     @Column(name = "createdBy", nullable = false)
     private String createdBy;
 
-    //Platform enum = [VR, tablet, meia]
+    @ElementCollection(targetClass =  PlatformEnum.class)
+    @Enumerated(STRING)
+    @Column(name = "platforms")
+    private List<PlatformEnum> platforms;
+
 }

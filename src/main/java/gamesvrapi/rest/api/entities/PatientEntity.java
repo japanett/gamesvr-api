@@ -1,4 +1,6 @@
-package gamesvrapi.rest.api.model;
+package gamesvrapi.rest.api.entities;
+
+import static javax.persistence.EnumType.STRING;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,8 +70,8 @@ public class PatientEntity {
     @Column(name = "gmfcsLevel")
     private Integer gmfcsLevel;
 
+    @Enumerated(STRING)
     @Column(name = "dominantHand", nullable = false)
-    @Enumerated(EnumType.STRING)
     private PatientHandEnum dominantHand;
 
     @Column(name = "patology", nullable = false)

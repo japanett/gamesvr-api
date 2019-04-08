@@ -1,6 +1,6 @@
 package gamesvrapi.rest.api.repository.Admin;
 
-import gamesvrapi.rest.api.model.AdminEntity;
+import gamesvrapi.rest.api.entities.AdminEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

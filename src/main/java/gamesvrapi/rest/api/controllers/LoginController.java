@@ -1,4 +1,4 @@
-package gamesvrapi.rest.api.controller;
+package gamesvrapi.rest.api.controllers;
 
 import gamesvrapi.rest.api.mapper.AuthenticationMapper;
 import gamesvrapi.rest.api.service.LoginService;

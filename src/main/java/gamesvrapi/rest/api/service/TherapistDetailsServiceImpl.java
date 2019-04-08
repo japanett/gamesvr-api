@@ -2,7 +2,7 @@ package gamesvrapi.rest.api.service;
 
 import static java.util.Collections.emptyList;
 
-import gamesvrapi.rest.api.model.TherapistEntity;
+import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

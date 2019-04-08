@@ -1,4 +1,4 @@
-package gamesvrapi.rest.api.controller;
+package gamesvrapi.rest.api.controllers;
 
 import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
 
@@ -6,12 +6,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import gamesvrapi.rest.api.model.GameEntity;
-import gamesvrapi.rest.api.model.PatientEntity;
-import gamesvrapi.rest.api.model.TherapistEntity;
-import gamesvrapi.rest.api.service.TherapistGameService;
+import gamesvrapi.rest.api.entities.GameEntity;
+import gamesvrapi.rest.api.entities.PatientEntity;
+import gamesvrapi.rest.api.entities.TherapistEntity;
+import gamesvrapi.rest.api.service.TherapistPatientGameService;
 import gamesvrapi.rest.api.service.TherapistPatientService;
 import gamesvrapi.rest.api.service.TherapistService;
+import gamesvrapi.rest.api.web.request.AddGameRequest;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class TherapistController {
     private final TherapistPatientService therapistPatientService;
 
     @Autowired
-    private final TherapistGameService therapistGameService;
+    private final TherapistPatientGameService therapistPatientGameService;
 
     // Therapist CRUD
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -100,7 +102,14 @@ public class TherapistController {
     // Games
     @GetMapping(path = "/games", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GameEntity> getGames (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.therapistGameService.getGames(token);
+        return this.therapistPatientGameService.getAvailableGames(token);
+    }
+
+    @PostMapping(path = "/{patientId}/game", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public PatientEntity addGame (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @PathVariable final String patientId,
+            @RequestBody final AddGameRequest request) {
+        return this.therapistPatientGameService.addGame(token, patientId, request);
     }
 
 }

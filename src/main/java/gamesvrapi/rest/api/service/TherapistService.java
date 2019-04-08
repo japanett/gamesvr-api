@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
-import gamesvrapi.rest.api.model.TherapistEntity;
+import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
 import lombok.RequiredArgsConstructor;

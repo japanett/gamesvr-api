@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
-import gamesvrapi.rest.api.model.PatientEntity;
-import gamesvrapi.rest.api.model.TherapistEntity;
+import gamesvrapi.rest.api.entities.PatientEntity;
+import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

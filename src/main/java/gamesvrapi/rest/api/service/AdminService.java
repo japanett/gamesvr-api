@@ -4,8 +4,8 @@ import java.util.List;
 
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
-import gamesvrapi.rest.api.model.AdminEntity;
-import gamesvrapi.rest.api.model.TherapistEntity;
+import gamesvrapi.rest.api.entities.AdminEntity;
+import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.repository.Admin.AdminRepository;
 import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
 import lombok.RequiredArgsConstructor;
