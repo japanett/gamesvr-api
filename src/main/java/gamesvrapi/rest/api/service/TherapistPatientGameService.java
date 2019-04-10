@@ -2,7 +2,6 @@ package gamesvrapi.rest.api.service;
 
 import java.util.List;
 
-import gamesvrapi.rest.api.entities.GameEntity;
 import gamesvrapi.rest.api.entities.PatientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.entities.TherapyEntity;
@@ -36,18 +35,6 @@ public class TherapistPatientGameService {
     @Autowired
     private final TherapistPatientTherapyEntityRepository therapistPatientTherapyEntityRepository;
 
-    public List<GameEntity> getAvailableGames (final String token) {
-        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
-
-        List<GameEntity> games = therapistGameEntityRepository.findAll();
-
-        if (games.isEmpty()) {
-            log.warn("TherapistPatientGameService, m=getGames, No Games found!");
-            throw new ResourceNotFoundException("Games not found!");
-        }
-        return games;
-    }
-
     @Transactional
     public TherapyEntity addTherapy (final String token,
             final String patientId,
@@ -75,7 +62,7 @@ public class TherapistPatientGameService {
     }
 
     @Transactional
-    public TherapyEntity changeStatusTherapy (final String token, final String patientId, final Long therapyId,
+    public TherapyEntity changeTherapyStatus (final String token, final String patientId, final Long therapyId,
             String status) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 

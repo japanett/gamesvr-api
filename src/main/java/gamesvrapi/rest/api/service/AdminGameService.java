@@ -38,19 +38,14 @@ public class AdminGameService {
         }
     }
 
-    public List<GameEntity> getGames (final String token) {
-
-        AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
-
+    public List<GameEntity> getGames () {
         final var games = this.adminGameRepository.findAll();
 
         if (games.isEmpty()) {
             log.warn("AdminGameService, m=getGames, No Games found!");
             throw new ResourceNotFoundException("No games found!");
         }
-
         return games;
-
     }
 
     @Transactional

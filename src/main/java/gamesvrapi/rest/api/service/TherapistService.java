@@ -1,17 +1,20 @@
 package gamesvrapi.rest.api.service;
 
+import gamesvrapi.rest.api.dto.TokenDTO;
+import gamesvrapi.rest.api.entities.TherapistEntity;
+import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
+import gamesvrapi.rest.api.exceptions.ExpectationFailedException;
+import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
+import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
+import gamesvrapi.rest.api.security.JWTService;
+import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
-import gamesvrapi.rest.api.entities.TherapistEntity;
-import gamesvrapi.rest.api.repository.Therapist.TherapistRepository;
-import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -26,6 +29,20 @@ public class TherapistService {
 
     @Autowired
     private final TherapistRepository therapistRepository;
+
+    public TokenDTO login (final String username, final String password) {
+        TherapistEntity therapist = therapistRepository.findByUsername(username);
+        try {
+            if (!this.bCryptPasswordEncoder.matches(password, therapist.getPassword())) {
+                throw new ExpectationFailedException("Incorrect password, username={" + username + "}");
+            }
+        } catch (java.lang.NullPointerException exception) {
+            throw new ResourceNotFoundException("Therapist username={" + username + "} not found!");
+        }
+        return TokenDTO.builder()
+                .japanetToken(JWTService.generateToken(therapist.getId(), "THERAPIST"))
+                .build();
+    }
 
     public TherapistEntity createTherapist (final TherapistEntity therapist) {
         try {
