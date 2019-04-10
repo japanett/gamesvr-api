@@ -10,6 +10,7 @@ import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,18 +38,14 @@ public class TherapistPatientService {
     public List<PatientEntity> getPatients (final String token) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
         return therapistPatientEntityRepository.findByTherapistId(therapist.getId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Therapist " + therapist.getName() + " has no patients !")
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("No patients found!"));
     }
 
     public PatientEntity getPatient (final String token,
             final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
         return therapistPatientEntityRepository.findById(patientId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("TherapistPatientService, m=getPatient, patientId=" + patientId)
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
     }
 
     @Transactional
@@ -56,8 +53,7 @@ public class TherapistPatientService {
             final PatientEntity patient) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
         PatientEntity updatedPatient = therapistPatientEntityRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "TherapistPatientService, m=updatePatient, patientId=" + patientId));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
 
         updatedPatient.setAge(patient.getAge());
         updatedPatient.setDominantHand(patient.getDominantHand());
@@ -70,16 +66,23 @@ public class TherapistPatientService {
         return therapistPatientEntityRepository.save(updatedPatient);
     }
 
+    // Check if this will destroy the therapies sessions
     @Transactional
     public PatientEntity deletePatient (String token, String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
         PatientEntity patient = therapistPatientEntityRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "TherapistPatientService, m=deletePatient, patientId=" + patientId));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
 
         therapistPatientEntityRepository.delete(patient);
         return patient;
+    }
+
+    public List<PatientEntity> getPatientsByFilter (final String token, final String patientId) {
+        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+
+        var entity = PatientEntity.builder().id(patientId).build();
+        return therapistPatientEntityRepository.findAll(Example.of(entity));
     }
 
     private String generateId () {
@@ -90,5 +93,4 @@ public class TherapistPatientService {
                 });
         return id;
     }
-
 }

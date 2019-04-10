@@ -1,6 +1,7 @@
 package gamesvrapi.rest.api.controllers;
 
 import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
+import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
 
@@ -9,10 +10,10 @@ import javax.validation.Valid;
 import gamesvrapi.rest.api.entities.GameEntity;
 import gamesvrapi.rest.api.entities.PatientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
+import gamesvrapi.rest.api.entities.TherapyEntity;
 import gamesvrapi.rest.api.service.TherapistPatientGameService;
 import gamesvrapi.rest.api.service.TherapistPatientService;
 import gamesvrapi.rest.api.service.TherapistService;
-import gamesvrapi.rest.api.web.request.AddGameRequest;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -48,6 +50,7 @@ public class TherapistController {
 
     // Therapist CRUD
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(CREATED)
     public TherapistEntity createTherapist (@Valid @RequestBody @NonNull final TherapistEntity therapist) {
         return this.therapistService.createTherapist(therapist);
     }
@@ -70,32 +73,28 @@ public class TherapistController {
 
     // Patients CRUD
     @PostMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(CREATED)
     public PatientEntity createPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
             @Valid @RequestBody @NonNull final PatientEntity patient) {
         return this.therapistPatientService.createPatient(token, patient);
     }
 
     @GetMapping(path = "/patients", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<PatientEntity> getPatients (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.therapistPatientService.getPatients(token);
-    }
-
-    @GetMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public PatientEntity getPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @RequestParam @NonNull final String patientId) {
-        return this.therapistPatientService.getPatient(token, patientId);
+    public List<PatientEntity> getPatientsByFilter (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @RequestParam(required = false) final String patientId) {
+        return this.therapistPatientService.getPatientsByFilter(token, patientId);
     }
 
     @PutMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PatientEntity putPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @RequestParam @NonNull final String patientId,
+            @RequestParam final String patientId,
             @RequestBody @NonNull final PatientEntity patient) {
         return this.therapistPatientService.updatePatient(token, patientId, patient);
     }
 
     @DeleteMapping(path = "/patient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PatientEntity deletePatient (@Valid @RequestHeader(HEADER_STRING) final String token,
-                                     @RequestParam @NonNull final String patientId) {
+            @RequestParam final String patientId) {
         return this.therapistPatientService.deletePatient(token, patientId);
     }
 
@@ -105,11 +104,26 @@ public class TherapistController {
         return this.therapistPatientGameService.getAvailableGames(token);
     }
 
-    @PostMapping(path = "/{patientId}/game", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public PatientEntity addGame (@Valid @RequestHeader(HEADER_STRING) final String token,
+    @PostMapping(path = "/patient/{patientId}/therapy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(CREATED)
+    public TherapyEntity addTherapy (@Valid @RequestHeader(HEADER_STRING) final String token,
             @PathVariable final String patientId,
-            @RequestBody final AddGameRequest request) {
-        return this.therapistPatientGameService.addGame(token, patientId, request);
+            @RequestBody final TherapyEntity request) {
+        return this.therapistPatientGameService.addTherapy(token, patientId, request);
     }
 
+    @GetMapping(path = "/patient/{patientId}/therapies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<TherapyEntity> getTherapies (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @PathVariable final String patientId) {
+        return this.therapistPatientGameService.getTherapies(token, patientId);
+    }
+
+    @PatchMapping(path = "/patient/{patientId}/therapy/{therapyId}/{status}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public TherapyEntity changeStatusTherapy (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @PathVariable final String patientId,
+            @PathVariable final Long therapyId,
+            @PathVariable final String status) {
+
+        return this.therapistPatientGameService.changeStatusTherapy(token, patientId, therapyId, status);
+    }
 }

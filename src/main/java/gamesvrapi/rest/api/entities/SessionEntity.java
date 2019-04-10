@@ -66,5 +66,6 @@ public class SessionEntity {
 
     @Column(name = "alternatedHandError")
     private Integer alternatedHandError;
+
 }
 

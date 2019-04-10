@@ -34,7 +34,7 @@ public class TherapistService {
             therapist.setPassword(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
             return therapistRepository.save(therapist);
         } catch (DataIntegrityViolationException exception) {
-            throw new DuplicateEntryException("Therapist Service, m=createTherapist, e=Duplicate username or email");
+            throw new DuplicateEntryException("Duplicate username or email");
         }
     }
 

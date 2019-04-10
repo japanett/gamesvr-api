@@ -1,5 +1,7 @@
 package gamesvrapi.rest.api.controllers;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import gamesvrapi.rest.api.mapper.AuthenticationMapper;
 import gamesvrapi.rest.api.service.LoginService;
 import gamesvrapi.rest.api.web.request.LoginRequest;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class LoginController {
     private final AuthenticationMapper mapper;
 
     @PostMapping("/therapist")
+    @ResponseStatus(CREATED)
     public AuthenticationResponse loginTherapist (@RequestBody final LoginRequest request) {
         return this.mapper.toResponse(this.loginService.loginTherapist(
                 request.getUsername(),
@@ -33,6 +37,7 @@ public class LoginController {
     }
 
     @PostMapping("/admin")
+    @ResponseStatus(CREATED)
     public AuthenticationResponse loginAdmin (@RequestBody final LoginRequest request) {
         return this.mapper.toResponse(this.loginService.loginAdmin(
                 request.getUsername(),

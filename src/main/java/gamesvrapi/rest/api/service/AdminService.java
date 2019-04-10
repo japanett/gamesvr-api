@@ -39,7 +39,7 @@ public class AdminService {
             log.info("{}", admin);
             return adminRepository.save(admin);
         } catch (DataIntegrityViolationException exception) {
-            throw new DuplicateEntryException("Admin Service, m=create, e=Duplicate username or email");
+            throw new DuplicateEntryException("Duplicate username or email");
         }
     }
 
@@ -48,7 +48,7 @@ public class AdminService {
         final var therapists = this.therapistRepository.findAll();
         if (therapists.isEmpty()) {
             log.warn("AdminService, m=getAllTherapist, No Therapists found!");
-            throw new ResourceNotFoundException("AdminService, m=getAllTherapist, e: ResourceNotFound!");
+            throw new ResourceNotFoundException("No Therapists found!");
         }
         return therapists;
     }

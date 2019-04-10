@@ -15,8 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PlatformEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +48,9 @@ public class TherapyEntity {
     @Column(name = "platform", nullable = false)
     private PlatformEnum platform;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PATIENT_ID")
     private PatientEntity patient;
@@ -64,4 +69,15 @@ public class TherapyEntity {
     @Column(name = "dat_update", nullable = false)
     private LocalDateTime updateDate;
 
+    @PrePersist
+    public void preInsert () {
+        if (this.active == null) {
+            this.setActive(Boolean.TRUE);
+        }
+    }
+
+    @JsonIgnore
+    public PatientEntity getPatient () {
+        return patient;
+    }
 }

@@ -27,7 +27,7 @@ public class TokenInterceptorService {
         return therapistRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("TokenInterceptor, m=translateTherapistToken, id : {}, e: ResourceNotFound", id);
-                    return new ResourceNotFoundException("TokenInterceptor, m=translateTherapistToken, id:" + id + ", e: ResourceNotFound");
+                    return new ResourceNotFoundException("No therapist for this token");
                 });
     }
 
@@ -36,7 +36,7 @@ public class TokenInterceptorService {
         return adminRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("TokenInterceptor, m=translateAdminToken, id : {}, e: ResourceNotFound", id);
-                    return new ResourceNotFoundException("TokenInterceptor, m=translateAdminToken, id:" + id + ", e: ResourceNotFound");
+                    return new ResourceNotFoundException("No admin for this token");
                 });
     }
 }

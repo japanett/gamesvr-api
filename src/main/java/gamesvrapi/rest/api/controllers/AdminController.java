@@ -1,6 +1,7 @@
 package gamesvrapi.rest.api.controllers;
 
 import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
+import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -39,6 +41,7 @@ public class AdminController {
     private final AdminGameService adminGameService;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(CREATED)
     public AdminEntity create (@Valid @RequestBody @NonNull final AdminEntity admin) {
         return this.adminService.create(admin);
     }
@@ -51,6 +54,7 @@ public class AdminController {
 
     // Games
     @PostMapping(path = "/game", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(CREATED)
     public GameEntity createGame (@Valid @RequestHeader(HEADER_STRING) final String token,
             @Valid @RequestBody @NonNull final GameEntity game) {
         return this.adminGameService.createGame(token, game);
@@ -63,7 +67,7 @@ public class AdminController {
 
     @PatchMapping(path = "/games/{gameId}/update-platforms", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public GameEntity addPlatform (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @Valid @PathVariable @NonNull final Long gameId,
+            @Valid @PathVariable final Long gameId,
             @Valid @RequestBody @NonNull final AddGamePlatformRequest request) {
         return this.adminGameService.updateGamePlatforms(token, gameId, request);
     }

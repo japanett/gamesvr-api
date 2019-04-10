@@ -13,6 +13,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import gamesvrapi.rest.api.enums.PlatformEnum;
@@ -54,7 +55,7 @@ public class GameEntity {
 
     @ElementCollection(targetClass =  PlatformEnum.class)
     @Enumerated(STRING)
-    @Column(name = "platforms")
+    @JoinColumn(name = "platforms")
     private List<PlatformEnum> platforms;
 
 }
