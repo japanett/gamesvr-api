@@ -10,7 +10,7 @@ import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
 import gamesvrapi.rest.api.exceptions.ExpectationFailedException;
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.repository.PatientRepository;
-import gamesvrapi.rest.api.repository.Therapist.TherapistPatientTherapyEntityRepository;
+import gamesvrapi.rest.api.repository.TherapyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class TherapyService {
     private final PatientRepository patientRepository;
 
     @Autowired
-    private final TherapistPatientTherapyEntityRepository therapistPatientTherapyEntityRepository;
+    private final TherapyRepository therapyRepository;
 
     @Transactional
     public TherapyEntity create (final String token,
@@ -47,13 +47,13 @@ public class TherapyService {
         log.info("=============== CREATED THERAPY:{}, PLATFORM:{}, PATIENT: {} ===============", request.getName(),
                 request.getPlatform().getDescription(), patient.getName());
 
-        return therapistPatientTherapyEntityRepository.save(request);
+        return therapyRepository.save(request);
     }
 
     public List<TherapyEntity> getPatientTherapies (final String token, final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-        return therapistPatientTherapyEntityRepository.findByPatientId(patientId)
+        return therapyRepository.findByPatientId(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Therapies not found!"));
     }
 
@@ -62,16 +62,16 @@ public class TherapyService {
             String status) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-        TherapyEntity therapy = therapistPatientTherapyEntityRepository.findByPatientIdAndId(patientId, therapyId)
+        TherapyEntity therapy = therapyRepository.findByPatientIdAndId(patientId, therapyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this patient"));
 
         switch (status) {
             case "activate":
                 therapy.setActive(Boolean.TRUE);
-                return therapistPatientTherapyEntityRepository.save(therapy);
+                return therapyRepository.save(therapy);
             case "deactivate":
                 therapy.setActive(Boolean.FALSE);
-                return therapistPatientTherapyEntityRepository.save(therapy);
+                return therapyRepository.save(therapy);
             default:
                 throw new ExpectationFailedException("activate / deactivate expected");
         }
