@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/therapies")
+@RequestMapping("/api/therapy")
 public class TherapyController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class TherapyController {
 
     // TODO: All these endpoints are Only possible for Therapist
 
-    @PostMapping(path = "/patients/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/patient/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
     public TherapyEntity create (@Valid @RequestHeader(HEADER_STRING) final String token,
             @PathVariable final String id,
@@ -48,7 +48,7 @@ public class TherapyController {
         return this.therapyService.getPatientTherapies(token, id);
     }
 
-    @PatchMapping(path = "/{id}/patients/{patientId}/{status}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PatchMapping(path = "/{id}/patient/{patientId}/{status}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapyEntity changeTherapyStatus (@Valid @RequestHeader(HEADER_STRING) final String token,
             @PathVariable final Long id,
             @PathVariable final String patientId,

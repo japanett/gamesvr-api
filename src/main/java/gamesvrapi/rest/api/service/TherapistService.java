@@ -49,7 +49,7 @@ public class TherapistService {
 
     public TherapistEntity create (final TherapistEntity therapist) {
         try {
-            log.info("============== USER CREATED ==============");
+            log.info("============== THERAPIST CREATED ==============");
             log.info("{}", therapist);
             therapist.setPassword(this.bCryptPasswordEncoder.encode(therapist.getPassword()));
             return therapistRepository.save(therapist);

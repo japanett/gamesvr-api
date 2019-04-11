@@ -69,12 +69,21 @@ public class PatientService {
         return patient;
     }
 
-    // TODO CHECK IF ONE THERAPIST CAN'T SEE THE OTHER'S PATIENTS
     public List<PatientEntity> getPatientsByFilter (final String token, final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-        var entity = PatientEntity.builder().id(patientId).build();
-        return patientRepository.findAll(Example.of(entity));
+        var entity = PatientEntity.builder()
+                .id(patientId)
+                .therapist(therapist)
+                .build();
+
+        List<PatientEntity> patientList = patientRepository.findAll(Example.of(entity));
+
+        if (patientList.isEmpty()) {
+            throw new ResourceNotFoundException("No patient found!");
+        }
+
+        return patientList;
     }
 
     private String generateId () {

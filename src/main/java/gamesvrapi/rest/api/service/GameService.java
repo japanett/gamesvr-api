@@ -1,5 +1,6 @@
 package gamesvrapi.rest.api.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import gamesvrapi.rest.api.entities.AdminEntity;
@@ -29,7 +30,7 @@ public class GameService {
     public GameEntity create (final String token, final GameEntity game) {
         try {
 
-            AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+            final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
             game.setCreatedBy(admin.getName());
 
             return gameRepository.save(game);
@@ -52,7 +53,7 @@ public class GameService {
     public GameEntity updateGamePlatforms (final String token, final Long id,
             final AddGamePlatformRequest request) {
 
-        AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+        final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
         final GameEntity game = this.gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
@@ -65,12 +66,15 @@ public class GameService {
     @Transactional
     public GameEntity delete (final String token, final Long id) {
 
-        AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+        final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
         final GameEntity game = this.gameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
 
+        game.setPlatforms(Collections.emptyList());
+
         gameRepository.delete(game);
+
         return game;
     }
 }
