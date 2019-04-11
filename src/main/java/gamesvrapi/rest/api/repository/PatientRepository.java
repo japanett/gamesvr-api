@@ -1,4 +1,4 @@
-package gamesvrapi.rest.api.repository.Therapist;
+package gamesvrapi.rest.api.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TherapistPatientEntityRepository extends JpaRepository<PatientEntity, Long> {
+public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
 
     Optional<List<PatientEntity>> findByTherapistId (long therapistId);
 

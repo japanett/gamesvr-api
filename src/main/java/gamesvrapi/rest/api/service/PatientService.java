@@ -6,7 +6,7 @@ import java.util.UUID;
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.entities.PatientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
-import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
+import gamesvrapi.rest.api.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,42 +17,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TherapistPatientService {
+public class PatientService {
 
     @Autowired
     private final TokenInterceptorService tokenInterceptorService;
 
     @Autowired
-    private final TherapistPatientEntityRepository therapistPatientEntityRepository;
+    private final PatientRepository patientRepository;
 
     @Transactional
-    public PatientEntity createPatient (final String token, final PatientEntity patient) {
+    public PatientEntity create (final String token, final PatientEntity patient) {
+
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+
         patient.setTherapist(therapist);
         patient.setId(generateId());
         log.info("============== PATIENT CREATED ============== ");
         log.info("Name: {}, Id: {}", patient.getName(), patient.getId());
-        return therapistPatientEntityRepository.save(patient);
-    }
-
-    public List<PatientEntity> getPatients (final String token) {
-        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
-        return therapistPatientEntityRepository.findByTherapistId(therapist.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("No patients found!"));
-    }
-
-    public PatientEntity getPatient (final String token,
-            final String patientId) {
-        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
-        return therapistPatientEntityRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+        return patientRepository.save(patient);
     }
 
     @Transactional
-    public PatientEntity updatePatient (final String token, final String patientId,
+    public PatientEntity update (final String token, final String id,
             final PatientEntity patient) {
+
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
-        PatientEntity updatedPatient = therapistPatientEntityRepository.findById(patientId)
+
+        PatientEntity updatedPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
 
         updatedPatient.setAge(patient.getAge());
@@ -63,31 +54,32 @@ public class TherapistPatientService {
         updatedPatient.setPatology(patient.getPatology());
         updatedPatient.setSex(patient.getSex());
 
-        return therapistPatientEntityRepository.save(updatedPatient);
+        return patientRepository.save(updatedPatient);
     }
 
-    // Check if this will destroy the therapies sessions
+    // TODO Check if this will destroy the therapies sessions
     @Transactional
-    public PatientEntity deletePatient (String token, String patientId) {
+    public PatientEntity delete (String token, String id) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-        PatientEntity patient = therapistPatientEntityRepository.findById(patientId)
+        PatientEntity patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
 
-        therapistPatientEntityRepository.delete(patient);
+        patientRepository.delete(patient);
         return patient;
     }
 
+    // TODO CHECK IF ONE THERAPIST CAN'T SEE THE OTHER'S PATIENTS
     public List<PatientEntity> getPatientsByFilter (final String token, final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
         var entity = PatientEntity.builder().id(patientId).build();
-        return therapistPatientEntityRepository.findAll(Example.of(entity));
+        return patientRepository.findAll(Example.of(entity));
     }
 
     private String generateId () {
         String id = (UUID.randomUUID().toString().substring(0, 6));
-        therapistPatientEntityRepository.findById(id)
+        patientRepository.findById(id)
                 .ifPresent(entity -> {
                     this.generateId();
                 });

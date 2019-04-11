@@ -8,13 +8,14 @@ import java.util.List;
 import javax.validation.Valid;
 
 import gamesvrapi.rest.api.entities.GameEntity;
-import gamesvrapi.rest.api.service.AdminGameService;
+import gamesvrapi.rest.api.service.GameService;
 import gamesvrapi.rest.api.web.request.AddGamePlatformRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,29 +33,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
 
     @Autowired
-    private final AdminGameService adminGameService;
+    private final GameService gameService;
 
-    // Games - Only possible for admin
+    // Only possible for Admin
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
-    public GameEntity createGame (@Valid @RequestHeader(HEADER_STRING) final String token,
+    public GameEntity create (@Valid @RequestHeader(HEADER_STRING) final String token,
             @Valid @RequestBody @NonNull final GameEntity game) {
-        return this.adminGameService.createGame(token, game);
+        return this.gameService.create(token, game);
     }
 
-    // TODO Delete game - Only possible for admin
-
-    // Games - Only possible for admin
-    @PatchMapping(path = "/{gameId}/update-platforms", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    // Only possible for Admin
+    @PatchMapping(path = "/{id}/update-platforms", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public GameEntity addPlatform (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @Valid @PathVariable final Long gameId,
+            @Valid @PathVariable final Long id,
             @Valid @RequestBody @NonNull final AddGamePlatformRequest request) {
-        return this.adminGameService.updateGamePlatforms(token, gameId, request);
+        return this.gameService.updateGamePlatforms(token, id, request);
     }
 
+    // Only possible for Admin
+    @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public GameEntity delete (@Valid @RequestHeader(HEADER_STRING) final String token,
+            @Valid @PathVariable final Long id) {
+        return this.gameService.delete(token, id);
+    }
+
+    // No auth needed
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GameEntity> getGames () {
-        return this.adminGameService.getGames();
+        return this.gameService.getGames();
     }
 
 }

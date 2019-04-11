@@ -8,8 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import gamesvrapi.rest.api.entities.PatientEntity;
-import gamesvrapi.rest.api.service.TherapistPatientGameService;
-import gamesvrapi.rest.api.service.TherapistPatientService;
+import gamesvrapi.rest.api.service.PatientService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,38 +33,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class PatientController {
 
     @Autowired
-    private final TherapistPatientService therapistPatientService;
+    private final PatientService patientService;
 
-    @Autowired
-    private final TherapistPatientGameService therapistPatientGameService;
-
-    // TODO: All these endpoints are Only possible for Therapist
-
-    // Patient CRUD
+    // Only possible for Therapist
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
-    public PatientEntity createPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
+    public PatientEntity create (@Valid @RequestHeader(HEADER_STRING) final String token,
             @Valid @RequestBody @NonNull final PatientEntity patient) {
-        return this.therapistPatientService.createPatient(token, patient);
+        return this.patientService.create(token, patient);
     }
 
+    // Only possible for Therapist
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<PatientEntity> getPatientsByFilter (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @RequestParam(required = false) final String patientId) {
-        return this.therapistPatientService.getPatientsByFilter(token, patientId);
+            @RequestParam(required = false) final String id) {
+        return this.patientService.getPatientsByFilter(token, id);
     }
 
+    // Only possible for Therapist
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PatientEntity putPatient (@Valid @RequestHeader(HEADER_STRING) final String token,
             @PathVariable final String id,
             @RequestBody @NonNull final PatientEntity patient) {
-        return this.therapistPatientService.updatePatient(token, id, patient);
+        return this.patientService.update(token, id, patient);
     }
 
+    // Only possible for Therapist
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PatientEntity deletePatient (@Valid @RequestHeader(HEADER_STRING) final String token,
             @PathVariable final String id) {
-        return this.therapistPatientService.deletePatient(token, id);
+        return this.patientService.delete(token, id);
     }
 
 }

@@ -34,8 +34,8 @@ public class AdminController {
 
     @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
-    public AuthenticationResponse login (@RequestBody final LoginRequest request) {
-        return this.authMapper.toResponse(this.adminService.login(
+    public AuthenticationResponse newSession (@RequestBody final LoginRequest request) {
+        return this.authMapper.toResponse(this.adminService.newSession(
                 request.getUsername(),
                 request.getPassword()
         ));

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.mapper.AuthenticationMapper;
-import gamesvrapi.rest.api.service.AdminService;
 import gamesvrapi.rest.api.service.TherapistService;
 import gamesvrapi.rest.api.web.request.LoginRequest;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
@@ -39,46 +38,46 @@ public class TherapistController {
     private final TherapistService therapistService;
 
     @Autowired
-    private final AdminService adminService;
-
-    @Autowired
     private final AuthenticationMapper authMapper;
 
     @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
     public AuthenticationResponse login (@RequestBody final LoginRequest request) {
-        return this.authMapper.toResponse(this.therapistService.login(
+        return this.authMapper.toResponse(this.therapistService.newSession(
                 request.getUsername(),
                 request.getPassword()
         ));
     }
 
-    // Therapist CRUD
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
     public TherapistEntity createTherapist (@Valid @RequestBody @NonNull final TherapistEntity therapist) {
-        return this.therapistService.createTherapist(therapist);
+        return this.therapistService.create(therapist);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity getTherapist (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.therapistService.getTherapist(token);
+        return this.therapistService.get(token);
     }
 
     @PatchMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity patchTherapist (@Valid @RequestHeader(HEADER_STRING) final String token,
             @Valid @RequestBody final PatchTherapistRequest req) {
-        return this.therapistService.patchTherapist(token, req);
+        return this.therapistService.patch(token, req);
     }
 
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TherapistEntity deleteTherapist (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.therapistService.deleteTherapist(token);
+        return this.therapistService.delete(token);
     }
 
     // TODO :Get All Therapists - Only possible for admin
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<TherapistEntity> getTherapists (@Valid @RequestHeader(HEADER_STRING) final String token) {
-        return this.adminService.getTherapists(token);
+    public List<TherapistEntity> getAll (@Valid @RequestHeader(HEADER_STRING) final String token) {
+        return this.therapistService.getAll(token);
     }
+
+    // TODO CHANGE PASSWORD
+
+    // TODO RECOVER PASSWORD
 }

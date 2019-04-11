@@ -1,4 +1,4 @@
-package gamesvrapi.rest.api.repository.Admin;
+package gamesvrapi.rest.api.repository;
 
 import gamesvrapi.rest.api.entities.AdminEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

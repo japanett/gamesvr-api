@@ -9,8 +9,7 @@ import gamesvrapi.rest.api.enums.PlatformEnum;
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
 import gamesvrapi.rest.api.exceptions.ExpectationFailedException;
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
-import gamesvrapi.rest.api.repository.Therapist.TherapistGameEntityRepository;
-import gamesvrapi.rest.api.repository.Therapist.TherapistPatientEntityRepository;
+import gamesvrapi.rest.api.repository.PatientRepository;
 import gamesvrapi.rest.api.repository.Therapist.TherapistPatientTherapyEntityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,28 +20,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TherapistPatientGameService {
+public class TherapyService {
 
     @Autowired
     private final TokenInterceptorService tokenInterceptorService;
 
     @Autowired
-    private final TherapistGameEntityRepository therapistGameEntityRepository;
-
-    @Autowired
-    private final TherapistPatientEntityRepository therapistPatientEntityRepository;
+    private final PatientRepository patientRepository;
 
     @Autowired
     private final TherapistPatientTherapyEntityRepository therapistPatientTherapyEntityRepository;
 
     @Transactional
-    public TherapyEntity addTherapy (final String token,
+    public TherapyEntity create (final String token,
             final String patientId,
             final TherapyEntity request) {
 
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-        PatientEntity patient = therapistPatientEntityRepository.findById(patientId)
+        PatientEntity patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
 
         this.checkDuplicateTherapy(patient.getTherapies(), request.getName(), request.getPlatform());
@@ -54,7 +50,7 @@ public class TherapistPatientGameService {
         return therapistPatientTherapyEntityRepository.save(request);
     }
 
-    public List<TherapyEntity> getTherapies (final String token, final String patientId) {
+    public List<TherapyEntity> getPatientTherapies (final String token, final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
         return therapistPatientTherapyEntityRepository.findByPatientId(patientId)
@@ -88,7 +84,7 @@ public class TherapistPatientGameService {
             if (therapy.getName().equals(name)
                     && therapy.getPlatform() == platform
                     && therapy.getActive() == Boolean.TRUE) {
-                log.warn("TherapistPatientGameService, m=addTherapy, e=Duplicate Therapy entry");
+                log.warn("TherapyService, m=addTherapy, e=Duplicate Therapy entry");
                 throw new DuplicateEntryException("Therapy already exists!");
             }
         });

@@ -30,7 +30,7 @@ public class JWTService {
         }
     }
 
-    // Do another "generateToken" method for /patients/login
+    // Do another "generateToken" method for /patients/session
 
     public static PayloadDTO getTokenPayload (final String token) {
         try {
