@@ -28,3 +28,9 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+.mvn/
+target/
+/gradle
+spring-boot.iml
+bin/
