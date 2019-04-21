@@ -43,6 +43,14 @@ Uso de tecnologias web em java para auxílio na área de saúde
 8. Instalar gradle
 9. Instalar gradle no eclipse IDE
 10. Acessar pasta raiz do projeto e rodar gradle build
+11. Acessar o projeto no eclipse e rodar o gradle
+	- Caso o eclipse mostre erro de baixar o gradle a causa pode ser o local em que esta salvo o gradle no sistema, um workaround seria:
+		- Acessar o site [http://services.gradle.org/distributions/](http://services.gradle.org/distributions/)
+		- Baixar a sua versão de gradle
+		- Colar na pasta GRADLE_HOME/wrapper/dist
+		- Remover o projeto do eclipse
+		- Fechar e abrir novamente o eclipse
+		- Importar o projeto novamente
 
 ## API Reference
 
