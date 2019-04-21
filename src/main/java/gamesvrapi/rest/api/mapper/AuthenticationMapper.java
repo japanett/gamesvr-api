@@ -9,5 +9,6 @@ import org.mapstruct.Mapper;
 @Mapper(unmappedTargetPolicy = IGNORE)
 public interface AuthenticationMapper {
 
+	// TODO - implementar autenticador
     AuthenticationResponse toResponse (TokenDTO token);
 }

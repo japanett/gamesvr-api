@@ -37,16 +37,16 @@ public class TherapistController {
     @Autowired
     private final TherapistService therapistService;
 
-    @Autowired
-    private final AuthenticationMapper authMapper;
-
+	/*
+	 * @Autowired private final AuthenticationMapper authMapper;
+	 */
     @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
     public AuthenticationResponse login (@RequestBody final LoginRequest request) {
-        return this.authMapper.toResponse(this.therapistService.newSession(
-                request.getUsername(),
-                request.getPassword()
-        ));
+		return null; /*
+						 * this.authMapper.toResponse(this.therapistService.newSession(
+						 * request.getUsername(), request.getPassword() ));
+						 */
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -29,16 +29,17 @@ public class AdminController {
     @Autowired
     private final AdminService adminService;
 
-    @Autowired
-    private final AuthenticationMapper authMapper;
+	/*
+	 * @Autowired private final AuthenticationMapper authMapper;
+	 */
 
     @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(CREATED)
     public AuthenticationResponse newSession (@RequestBody final LoginRequest request) {
-        return this.authMapper.toResponse(this.adminService.newSession(
-                request.getUsername(),
-                request.getPassword()
-        ));
+		return null;/*
+					 * this.authMapper.toResponse(this.adminService.newSession(
+					 * request.getUsername(), request.getPassword() ));
+					 */
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
