@@ -3,17 +3,6 @@ Projeto responsável por expor APIs RESTFul para manipular usuários, terapeutas
 
 ## Motivação
 Terapeutas que utilizam jogos VR em tratamento de pessoas com problema de mobilidade, precisam definir rotinas e ordens para o pacientes executarem os jogos, logo este projeto foi proposto como uma solução para auxiliar os terapeutas a propor ordem de execução dos jogos e analisar o desenvolvimento dos mesmos em um determinado tempo. 
-
-## Build status
-Build status of continus integration i.e. travis, appveyor etc. Ex. - 
-
-[![Build Status](https://travis-ci.org/akashnimare/foco.svg?branch=master)](https://travis-ci.org/akashnimare/foco)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/akashnimare/foco?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/foco/branch/master)
-
-## Code style
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
-
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
  
 ## Screenshots
 ![Games VR API](https://raw.githubusercontent.com/japanett/clashAPI/master/app_v2.png)
@@ -54,13 +43,11 @@ Uso de tecnologias web em java para auxílio na área de saúde
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-## Tests
-Describe and show how to run the tests with code examples.
+TODO - adicionar referencia as APIs
 
 ## How to use?
-If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
+
+TODO - adicionar explicação de como rodar o projeto
 
 ## Contribuição
 Para contrbuir com o projeto é possível entrar em contato com os autores do projeto ou abrir uma discussão no github apontando o problema com imagem.
