@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenDTO {
 
-    private String japanetToken;
+  // TODO - renomear atributo
+  private String japanetToken;
 }

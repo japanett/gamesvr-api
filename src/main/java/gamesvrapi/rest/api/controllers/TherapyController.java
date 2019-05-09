@@ -2,11 +2,8 @@ package gamesvrapi.rest.api.controllers;
 
 import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
 import static org.springframework.http.HttpStatus.CREATED;
-
 import java.util.List;
-
 import javax.validation.Valid;
-
 import gamesvrapi.rest.api.entities.TherapyEntity;
 import gamesvrapi.rest.api.service.TherapyService;
 import lombok.RequiredArgsConstructor;
@@ -29,30 +26,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/therapy")
 public class TherapyController {
 
-    @Autowired
-    private final TherapyService therapyService;
+  @Autowired
+  private final TherapyService therapyService;
 
-    // TODO: All these endpoints are Only possible for Therapist
+  // TODO: All these endpoints are Only possible for Therapist
 
-    @PostMapping(path = "/patient/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(CREATED)
-    public TherapyEntity create (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @PathVariable final String id,
-            @RequestBody final TherapyEntity request) {
-        return this.therapyService.create(token, id, request);
-    }
+  @PostMapping(path = "/patient/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseStatus(CREATED)
+  public TherapyEntity create(@Valid @RequestHeader(HEADER_STRING) final String token,
+      @PathVariable final String id, @RequestBody final TherapyEntity request) {
+    return this.therapyService.create(token, id, request);
+  }
 
-    @GetMapping(path = "/patient/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<TherapyEntity> getPatientTherapies (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @PathVariable final String id) {
-        return this.therapyService.getPatientTherapies(token, id);
-    }
+  @GetMapping(path = "/patient/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public List<TherapyEntity> getPatientTherapies(
+      @Valid @RequestHeader(HEADER_STRING) final String token, @PathVariable final String id) {
+    return this.therapyService.getPatientTherapies(token, id);
+  }
 
-    @PatchMapping(path = "/{id}/patient/{patientId}/{status}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TherapyEntity changeTherapyStatus (@Valid @RequestHeader(HEADER_STRING) final String token,
-            @PathVariable final Long id,
-            @PathVariable final String patientId,
-            @PathVariable final String status) {
-        return this.therapyService.changeTherapyStatus(token, patientId, id, status);
-    }
+  @PatchMapping(path = "/{id}/patient/{patientId}/{status}",
+      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public TherapyEntity changeTherapyStatus(@Valid @RequestHeader(HEADER_STRING) final String token,
+      @PathVariable final Long id, @PathVariable final String patientId,
+      @PathVariable final String status) {
+    return this.therapyService.changeTherapyStatus(token, patientId, id, status);
+  }
 }

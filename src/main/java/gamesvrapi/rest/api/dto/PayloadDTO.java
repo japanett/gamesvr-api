@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PayloadDTO {
 
-    private String id;
+  private String id;
 
-    private String role;
+  private String role;
 
 }

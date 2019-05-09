@@ -1,9 +1,7 @@
 package gamesvrapi.rest.api.controllers;
 
 import static org.springframework.http.HttpStatus.CREATED;
-
 import javax.validation.Valid;
-
 import gamesvrapi.rest.api.entities.AdminEntity;
 import gamesvrapi.rest.api.mapper.AuthenticationMapper;
 import gamesvrapi.rest.api.service.AdminService;
@@ -26,26 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    @Autowired
-    private final AdminService adminService;
+  @Autowired
+  private final AdminService adminService;
 
-	/*
-	 * @Autowired private final AuthenticationMapper authMapper;
-	 */
+  /*
+   * @Autowired private final AuthenticationMapper authMapper;
+   */
 
-    @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(CREATED)
-    public AuthenticationResponse newSession (@RequestBody final LoginRequest request) {
-		return null;/*
-					 * this.authMapper.toResponse(this.adminService.newSession(
-					 * request.getUsername(), request.getPassword() ));
-					 */
-    }
+  @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseStatus(CREATED)
+  public AuthenticationResponse newSession(@RequestBody final LoginRequest request) {
+    return null;/*
+                 * this.authMapper.toResponse(this.adminService.newSession( request.getUsername(),
+                 * request.getPassword() ));
+                 */
+  }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(CREATED)
-    public AdminEntity create (@Valid @RequestBody @NonNull final AdminEntity admin) {
-        return this.adminService.create(admin);
-    }
+  @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @ResponseStatus(CREATED)
+  public AdminEntity create(@Valid @RequestBody @NonNull final AdminEntity admin) {
+    return this.adminService.create(admin);
+  }
 
 }

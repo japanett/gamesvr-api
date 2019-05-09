@@ -2,7 +2,6 @@ package gamesvrapi.rest.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import gamesvrapi.rest.api.entities.TherapistEntity;
 
 // JPA Documentarion
@@ -10,9 +9,9 @@ import gamesvrapi.rest.api.entities.TherapistEntity;
 @Repository
 public interface TherapistRepository extends JpaRepository<TherapistEntity, Long> {
 
-    Long countPatientsById (final Long id);
+  Long countPatientsById(final Long id);
 
-    TherapistEntity findByUsername (final String username);
+  TherapistEntity findByUsername(final String username);
 
-    TherapistEntity findByUsernameAndPassword (final String username, final String password);
+  TherapistEntity findByUsernameAndPassword(final String username, final String password);
 }

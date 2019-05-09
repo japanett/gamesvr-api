@@ -18,44 +18,43 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenInterceptorService {
 
-    @Autowired
-    private final TherapistRepository therapistRepository;
+  @Autowired
+  private final TherapistRepository therapistRepository;
 
-    @Autowired
-    private final AdminRepository adminRepository;
+  @Autowired
+  private final AdminRepository adminRepository;
 
-    public TherapistEntity translateTherapistToken (final String token) {
+  public TherapistEntity translateTherapistToken(final String token) {
 
-        PayloadDTO payload = JWTService.getTokenPayload(token);
+    PayloadDTO payload = JWTService.getTokenPayload(token);
 
-        long id = Long.parseLong(payload.getId());
+    long id = Long.parseLong(payload.getId());
 
-        if (!payload.getRole().equals("THERAPIST")) {
-            throw new ExpectationFailedException("Expected role: 'THERAPIST', but got: " + payload.getRole());
-        }
-
-        return therapistRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.warn("TokenInterceptor, m=translateTherapistToken, id : {}, e: ResourceNotFound", id);
-                    return new ResourceNotFoundException("No therapist for this token");
-                });
+    if (!payload.getRole().equals("THERAPIST")) {
+      throw new ExpectationFailedException(
+          "Expected role: 'THERAPIST', but got: " + payload.getRole());
     }
 
-    public AdminEntity translateAdminToken (final String token) {
+    return therapistRepository.findById(id).orElseThrow(() -> {
+      log.warn("TokenInterceptor, m=translateTherapistToken, id : {}, e: ResourceNotFound", id);
+      return new ResourceNotFoundException("No therapist for this token");
+    });
+  }
 
-        PayloadDTO payload = JWTService.getTokenPayload(token);
+  public AdminEntity translateAdminToken(final String token) {
 
-        long id = Long.parseLong(payload.getId());
+    PayloadDTO payload = JWTService.getTokenPayload(token);
 
-        if (!payload.getRole().equals("ADMIN")) {
-            throw new ExpectationFailedException("Expected role: 'ADMIN', but got: " + payload.getRole());
-        }
+    long id = Long.parseLong(payload.getId());
 
-        return adminRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.warn("TokenInterceptor, m=translateAdminToken, id : {}, e: ResourceNotFound", id);
-                    return new ResourceNotFoundException("No admin for this token");
-                });
+    if (!payload.getRole().equals("ADMIN")) {
+      throw new ExpectationFailedException("Expected role: 'ADMIN', but got: " + payload.getRole());
     }
+
+    return adminRepository.findById(id).orElseThrow(() -> {
+      log.warn("TokenInterceptor, m=translateAdminToken, id : {}, e: ResourceNotFound", id);
+      return new ResourceNotFoundException("No admin for this token");
+    });
+  }
 
 }

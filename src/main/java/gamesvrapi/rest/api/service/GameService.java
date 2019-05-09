@@ -2,7 +2,6 @@ package gamesvrapi.rest.api.service;
 
 import java.util.Collections;
 import java.util.List;
-
 import gamesvrapi.rest.api.entities.AdminEntity;
 import gamesvrapi.rest.api.entities.GameEntity;
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
@@ -21,60 +20,60 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class GameService {
 
-    @Autowired
-    private final TokenInterceptorService tokenInterceptorService;
+  @Autowired
+  private final TokenInterceptorService tokenInterceptorService;
 
-    @Autowired
-    private final GameRepository gameRepository;
+  @Autowired
+  private final GameRepository gameRepository;
 
-    public GameEntity create (final String token, final GameEntity game) {
-        try {
+  public GameEntity create(final String token, final GameEntity game) {
+    try {
 
-            final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
-            game.setCreatedBy(admin.getName());
+      final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+      game.setCreatedBy(admin.getName());
 
-            return gameRepository.save(game);
-        } catch (DataIntegrityViolationException exception) {
-            throw new DuplicateEntryException("Duplicate game name!");
-        }
+      return gameRepository.save(game);
+    } catch (DataIntegrityViolationException exception) {
+      throw new DuplicateEntryException("Duplicate game name!");
     }
+  }
 
-    public List<GameEntity> getGames () {
-        final var games = this.gameRepository.findAll();
+  public List<GameEntity> getGames() {
+    final var games = this.gameRepository.findAll();
 
-        if (games.isEmpty()) {
-            log.warn("GameService, m=getGames, No Games found!");
-            throw new ResourceNotFoundException("No games found!");
-        }
-        return games;
+    if (games.isEmpty()) {
+      log.warn("GameService, m=getGames, No Games found!");
+      throw new ResourceNotFoundException("No games found!");
     }
+    return games;
+  }
 
-    @Transactional
-    public GameEntity updateGamePlatforms (final String token, final Long id,
-            final AddGamePlatformRequest request) {
+  @Transactional
+  public GameEntity updateGamePlatforms(final String token, final Long id,
+      final AddGamePlatformRequest request) {
 
-        final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+    final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
-        final GameEntity game = this.gameRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
+    final GameEntity game = this.gameRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
 
-        game.setPlatforms(request.getPlatforms());
+    game.setPlatforms(request.getPlatforms());
 
-        return gameRepository.save(game);
-    }
+    return gameRepository.save(game);
+  }
 
-    @Transactional
-    public GameEntity delete (final String token, final Long id) {
+  @Transactional
+  public GameEntity delete(final String token, final Long id) {
 
-        final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
+    final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
-        final GameEntity game = this.gameRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
+    final GameEntity game = this.gameRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
 
-        game.setPlatforms(Collections.emptyList());
+    game.setPlatforms(Collections.emptyList());
 
-        gameRepository.delete(game);
+    gameRepository.delete(game);
 
-        return game;
-    }
+    return game;
+  }
 }

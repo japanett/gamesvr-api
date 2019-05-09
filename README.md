@@ -7,16 +7,22 @@ Terapeutas que utilizam jogos VR em tratamento de pessoas com problema de mobili
 ## Screenshots
 ![Games VR API](https://raw.githubusercontent.com/japanett/clashAPI/master/app_v2.png)
 
+## Code Style
+Para este projeto usamos a formatação proposta pela Google, disponível em: [https://google.github.io/styleguide/javaguide.html](https://google.github.io/styleguide/javaguide.html)
+
 ## Stack
-| Tecnologia | Versão |
-| ---        | ---    |
-| Java       | 11     |
-| Gradle     | 5      |
-| Spring-boot| 2.1.3 
-| java-jwt | 3.4.0 |
-| java-jwt | 2.3.0 |
-| lombok | |
-| mapstruct-jdk8 | 1.2.0 |
+
+| Tecnologia  | Versão |
+| ---         | ---    |
+| Java        | 11     |
+| Gradle      | 5      |
+| Spring-boot | 2.1.3  |
+| Spring-data | 2.1.5  |
+| Spring-web  | 2.1.3  |
+| Java JWT    | 3.4.0  |
+| Lombok      | 1.18.6 |
+| Mapstruct   | 1.2.0  |
+| MySQL       |        |
 
 ## Features
 Uso de tecnologias web em java para auxílio na área de saúde

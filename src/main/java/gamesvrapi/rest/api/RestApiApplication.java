@@ -10,13 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableJpaAuditing
 public class RestApiApplication {
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder () {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    public static void main (String[] args) {
-        SpringApplication.run(RestApiApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(RestApiApplication.class, args);
+  }
 
 }
