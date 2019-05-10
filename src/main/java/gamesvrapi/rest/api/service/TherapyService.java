@@ -48,7 +48,7 @@ public class TherapyService {
     return therapyRepository.save(request);
   }
 
-  public List<TherapyEntity> getpacientTherapies(final String token, final String pacientId) {
+  public List<TherapyEntity> getPacientTherapies(final String token, final String pacientId) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
     return therapyRepository.findByPacientId(pacientId)
