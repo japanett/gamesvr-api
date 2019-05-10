@@ -31,36 +31,36 @@ import lombok.extern.slf4j.Slf4j;
 public class PacientController {
 
   @Autowired
-  private final PacientService patientService;
+  private final PacientService pacientService;
 
   // Only possible for Therapist
   @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseStatus(CREATED)
   public PacientEntity create(@Valid @RequestHeader(HEADER_STRING) final String token,
-      @Valid @RequestBody @NonNull final PacientEntity patient) {
-    return this.patientService.create(token, patient);
+      @Valid @RequestBody @NonNull final PacientEntity Pacient) {
+    return this.pacientService.create(token, Pacient);
   }
 
   // Only possible for Therapist
   @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public List<PacientEntity> getPatientsByFilter(
+  public List<PacientEntity> getPacientsByFilter(
       @Valid @RequestHeader(HEADER_STRING) final String token,
       @RequestParam(required = false) final String id) {
-    return this.patientService.getPatientsByFilter(token, id);
+    return this.pacientService.getPacientsByFilter(token, id);
   }
 
   // Only possible for Therapist
   @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public PacientEntity putPatient(@Valid @RequestHeader(HEADER_STRING) final String token,
-      @PathVariable final String id, @RequestBody @NonNull final PacientEntity patient) {
-    return this.patientService.update(token, id, patient);
+  public PacientEntity putPacient(@Valid @RequestHeader(HEADER_STRING) final String token,
+      @PathVariable final String id, @RequestBody @NonNull final PacientEntity Pacient) {
+    return this.pacientService.update(token, id, Pacient);
   }
 
   // Only possible for Therapist
   @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public PacientEntity deletePatient(@Valid @RequestHeader(HEADER_STRING) final String token,
+  public PacientEntity deletePacient(@Valid @RequestHeader(HEADER_STRING) final String token,
       @PathVariable final String id) {
-    return this.patientService.delete(token, id);
+    return this.pacientService.delete(token, id);
   }
 
   @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -68,7 +68,7 @@ public class PacientController {
       @Valid @RequestHeader(HEADER_STRING) final String token,
       @RequestParam(required = false) final String id) {
     log.info("Searching pacient performance history");
-    return this.patientService.getPatientPerformance(token, id);
+    return this.pacientService.getPacientPerformance(token, id);
   }
 }
 

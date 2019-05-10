@@ -15,15 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PlatformEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Builder
@@ -49,8 +49,8 @@ public class TherapyEntity {
   private Boolean active;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "PATIENT_ID")
-  private PacientEntity patient;
+  @JoinColumn(name = "PACIENT_ID")
+  private PacientEntity pacient;
 
   @OneToMany(mappedBy = "therapy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<StageEntity> stages;
@@ -74,7 +74,7 @@ public class TherapyEntity {
   }
 
   @JsonIgnore
-  public PacientEntity getPatient() {
-    return patient;
+  public PacientEntity getPacient() {
+    return pacient;
   }
 }

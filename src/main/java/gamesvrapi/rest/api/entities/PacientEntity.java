@@ -17,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PacientHandEnum;
 import gamesvrapi.rest.api.enums.SexEnum;
@@ -24,9 +27,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Builder
@@ -77,7 +77,7 @@ public class PacientEntity {
   @Column(name = "objective", nullable = false)
   private String objective;
 
-  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "pacient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<TherapyEntity> therapies;
 
   @Column(name = "active", nullable = false)

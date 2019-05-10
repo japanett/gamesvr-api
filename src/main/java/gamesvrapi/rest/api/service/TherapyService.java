@@ -1,6 +1,9 @@
 package gamesvrapi.rest.api.service;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import gamesvrapi.rest.api.entities.PacientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.entities.TherapyEntity;
@@ -12,9 +15,6 @@ import gamesvrapi.rest.api.repository.PacientRepository;
 import gamesvrapi.rest.api.repository.TherapyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -25,43 +25,43 @@ public class TherapyService {
   private final TokenInterceptorService tokenInterceptorService;
 
   @Autowired
-  private final PacientRepository patientRepository;
+  private final PacientRepository pacientRepository;
 
   @Autowired
   private final TherapyRepository therapyRepository;
 
   @Transactional
-  public TherapyEntity create(final String token, final String patientId,
+  public TherapyEntity create(final String token, final String pacientId,
       final TherapyEntity request) {
 
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity patient = patientRepository.findById(patientId)
-        .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+    PacientEntity pacient = pacientRepository.findById(pacientId)
+        .orElseThrow(() -> new ResourceNotFoundException("pacient not found!"));
 
-    this.checkDuplicateTherapy(patient.getTherapies(), request.getName(), request.getPlatform());
+    this.checkDuplicateTherapy(pacient.getTherapies(), request.getName(), request.getPlatform());
 
-    request.setPatient(patient);
-    log.info("=============== CREATED THERAPY:{0}, PLATFORM:{1}, PATIENT: {2} ===============",
-        request.getName(), request.getPlatform().getDescription(), patient.getName());
+    request.setPacient(pacient);
+    log.info("=============== CREATED THERAPY:{0}, PLATFORM:{1}, pacient: {2} ===============",
+        request.getName(), request.getPlatform().getDescription(), pacient.getName());
 
     return therapyRepository.save(request);
   }
 
-  public List<TherapyEntity> getPatientTherapies(final String token, final String patientId) {
+  public List<TherapyEntity> getpacientTherapies(final String token, final String pacientId) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    return therapyRepository.findByPatientId(patientId)
+    return therapyRepository.findByPacientId(pacientId)
         .orElseThrow(() -> new ResourceNotFoundException("Therapies not found!"));
   }
 
   @Transactional
-  public TherapyEntity changeTherapyStatus(final String token, final String patientId,
+  public TherapyEntity changeTherapyStatus(final String token, final String pacientId,
       final Long therapyId, String status) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    TherapyEntity therapy = therapyRepository.findByPatientIdAndId(patientId, therapyId)
-        .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this patient"));
+    TherapyEntity therapy = therapyRepository.findByPacientIdAndId(pacientId, therapyId)
+        .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this pacient"));
 
     switch (status) {
       case "activate":

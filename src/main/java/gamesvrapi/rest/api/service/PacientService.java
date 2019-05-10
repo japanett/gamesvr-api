@@ -27,34 +27,34 @@ public class PacientService {
   private final PacientRepository pacientRepository;
 
   @Transactional
-  public PacientEntity create(final String token, final PacientEntity patient) {
+  public PacientEntity create(final String token, final PacientEntity Pacient) {
 
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    patient.setTherapist(therapist);
-    patient.setId(generateId());
-    log.info("============== PATIENT CREATED ============== ");
-    log.info("Name: {}, Id: {}", patient.getName(), patient.getId());
-    return pacientRepository.save(patient);
+    Pacient.setTherapist(therapist);
+    Pacient.setId(generateId());
+    log.info("============== Pacient CREATED ============== ");
+    log.info("Name: {}, Id: {}", Pacient.getName(), Pacient.getId());
+    return pacientRepository.save(Pacient);
   }
 
   @Transactional
-  public PacientEntity update(final String token, final String id, final PacientEntity patient) {
+  public PacientEntity update(final String token, final String id, final PacientEntity Pacient) {
 
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity updatedPatient = pacientRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+    PacientEntity updatedPacient = pacientRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
 
-    updatedPatient.setAge(patient.getAge());
-    updatedPatient.setDominantHand(patient.getDominantHand());
-    updatedPatient.setGmfcsLevel(patient.getGmfcsLevel());
-    updatedPatient.setName(patient.getName());
-    updatedPatient.setObjective(patient.getObjective());
-    updatedPatient.setPatology(patient.getPatology());
-    updatedPatient.setSex(patient.getSex());
+    updatedPacient.setAge(Pacient.getAge());
+    updatedPacient.setDominantHand(Pacient.getDominantHand());
+    updatedPacient.setGmfcsLevel(Pacient.getGmfcsLevel());
+    updatedPacient.setName(Pacient.getName());
+    updatedPacient.setObjective(Pacient.getObjective());
+    updatedPacient.setPatology(Pacient.getPatology());
+    updatedPacient.setSex(Pacient.getSex());
 
-    return pacientRepository.save(updatedPatient);
+    return pacientRepository.save(updatedPacient);
   }
 
   // TODO Check if this will destroy the therapies sessions
@@ -62,25 +62,25 @@ public class PacientService {
   public PacientEntity delete(String token, String id) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity patient = pacientRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+    PacientEntity Pacient = pacientRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
 
-    pacientRepository.delete(patient);
-    return patient;
+    pacientRepository.delete(Pacient);
+    return Pacient;
   }
 
-  public List<PacientEntity> getPatientsByFilter(final String token, final String patientId) {
+  public List<PacientEntity> getPacientsByFilter(final String token, final String PacientId) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    var entity = PacientEntity.builder().id(patientId).therapist(therapist).build();
+    var entity = PacientEntity.builder().id(PacientId).therapist(therapist).build();
 
-    List<PacientEntity> patientList = pacientRepository.findAll(Example.of(entity));
+    List<PacientEntity> PacientList = pacientRepository.findAll(Example.of(entity));
 
-    if (patientList.isEmpty()) {
-      throw new ResourceNotFoundException("No patient found!");
+    if (PacientList.isEmpty()) {
+      throw new ResourceNotFoundException("No Pacient found!");
     }
 
-    return patientList;
+    return PacientList;
   }
 
   private String generateId() {
@@ -91,8 +91,8 @@ public class PacientService {
     return id;
   }
 
-  public List<PacientPerformanceDTO> getPatientPerformance(@Valid String token, String id) {
-    List<PacientEntity> patients = getPatientsByFilter(token, id);
+  public List<PacientPerformanceDTO> getPacientPerformance(@Valid String token, String id) {
+    List<PacientEntity> Pacients = getPacientsByFilter(token, id);
     return null;
 
   }

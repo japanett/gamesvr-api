@@ -21,7 +21,7 @@ public class AddTherapyRequest {
   private PlatformEnum platform;
 
   @NotNull(message = "FIELD_BLANK")
-  private String patientId;
+  private String pacientId;
 
 
 
