@@ -57,7 +57,7 @@ public class PacientController {
     return this.pacientService.delete(token, id);
   }
 
-  @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping(path = "/pacient/performance/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public List<PacientPerformanceDTO> getPacientPerformance(
       @Valid @RequestHeader(HEADER_STRING) final String token,
       @RequestParam(required = false) final String id) {
