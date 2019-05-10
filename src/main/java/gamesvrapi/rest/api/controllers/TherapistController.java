@@ -1,11 +1,6 @@
 package gamesvrapi.rest.api.controllers;
 
-import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
-import static org.springframework.http.HttpStatus.CREATED;
-import java.util.List;
-import javax.validation.Valid;
 import gamesvrapi.rest.api.entities.TherapistEntity;
-import gamesvrapi.rest.api.mapper.AuthenticationMapper;
 import gamesvrapi.rest.api.service.TherapistService;
 import gamesvrapi.rest.api.web.request.LoginRequest;
 import gamesvrapi.rest.api.web.request.PatchTherapistRequest;
@@ -15,15 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+import static gamesvrapi.rest.api.security.SecurityConstants.HEADER_STRING;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @Slf4j
 @RestController
@@ -31,8 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/therapists")
 public class TherapistController {
 
-  @Autowired
-  private final TherapistService therapistService;
+  @Autowired private final TherapistService therapistService;
 
   /*
    * @Autowired private final AuthenticationMapper authMapper;
@@ -59,7 +51,8 @@ public class TherapistController {
   }
 
   @PatchMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public TherapistEntity patchTherapist(@Valid @RequestHeader(HEADER_STRING) final String token,
+  public TherapistEntity patchTherapist(
+      @Valid @RequestHeader(HEADER_STRING) final String token,
       @Valid @RequestBody final PatchTherapistRequest req) {
     return this.therapistService.patch(token, req);
   }

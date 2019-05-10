@@ -1,7 +1,9 @@
 package gamesvrapi.rest.api.enums;
 
 public enum PlatformEnum {
-  VR(1, "Virtual Reality"), SOCKS(2, "Intelligent Socks"), TABLET(3, "Tablet");
+  VR(1, "Virtual Reality"),
+  SOCKS(2, "Intelligent Socks"),
+  TABLET(3, "Tablet");
 
   private final String description;
 

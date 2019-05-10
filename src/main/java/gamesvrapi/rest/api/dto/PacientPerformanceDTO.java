@@ -1,20 +1,5 @@
 package gamesvrapi.rest.api.dto;
 
-import static javax.persistence.EnumType.STRING;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.Size;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.entities.TherapyEntity;
 import gamesvrapi.rest.api.enums.PacientHandEnum;
@@ -23,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -55,5 +43,4 @@ public class PacientPerformanceDTO {
   private List<TherapyEntity> therapies;
 
   private Boolean active;
-
 }

@@ -19,11 +19,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminService {
 
-  @Autowired
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  @Autowired private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Autowired
-  private final AdminRepository adminRepository;
+  @Autowired private final AdminRepository adminRepository;
 
   public TokenDTO newSession(final String username, final String password) {
     AdminEntity admin = adminRepository.findByUsername(username);
@@ -34,7 +32,8 @@ public class AdminService {
     } catch (java.lang.NullPointerException exception) {
       throw new ResourceNotFoundException("Admin username={" + username + "} not found!");
     }
-    return TokenDTO.builder().japanetToken(JWTService.generateToken(admin.getId(), "ADMIN"))
+    return TokenDTO.builder()
+        .japanetToken(JWTService.generateToken(admin.getId(), "ADMIN"))
         .build();
   }
 
@@ -48,5 +47,4 @@ public class AdminService {
       throw new DuplicateEntryException("Duplicate username or email");
     }
   }
-
 }

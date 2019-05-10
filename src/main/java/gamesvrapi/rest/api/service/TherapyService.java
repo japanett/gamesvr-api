@@ -1,9 +1,5 @@
 package gamesvrapi.rest.api.service;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import gamesvrapi.rest.api.entities.PacientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.entities.TherapyEntity;
@@ -15,34 +11,39 @@ import gamesvrapi.rest.api.repository.PacientRepository;
 import gamesvrapi.rest.api.repository.TherapyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TherapyService {
 
-  @Autowired
-  private final TokenInterceptorService tokenInterceptorService;
+  @Autowired private final TokenInterceptorService tokenInterceptorService;
 
-  @Autowired
-  private final PacientRepository pacientRepository;
+  @Autowired private final PacientRepository pacientRepository;
 
-  @Autowired
-  private final TherapyRepository therapyRepository;
+  @Autowired private final TherapyRepository therapyRepository;
 
   @Transactional
-  public TherapyEntity create(final String token, final String pacientId,
-      final TherapyEntity request) {
+  public TherapyEntity create(
+      final String token, final String pacientId, final TherapyEntity request) {
 
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity pacient = pacientRepository.findById(pacientId)
-        .orElseThrow(() -> new ResourceNotFoundException("pacient not found!"));
+    PacientEntity pacient =
+        pacientRepository
+            .findById(pacientId)
+            .orElseThrow(() -> new ResourceNotFoundException("pacient not found!"));
 
     this.checkDuplicateTherapy(pacient.getTherapies(), request.getName(), request.getPlatform());
 
     request.setPacient(pacient);
-    log.info("=============== CREATED THERAPY:{0}, PLATFORM:{1}, pacient: {2} ===============",
+    log.info(
+        "=============== CREATED THERAPY:{0}, PLATFORM:{1}, pacient: {2} ===============",
         request.getName(), request.getPlatform().getDescription(), pacient.getName());
 
     return therapyRepository.save(request);
@@ -51,17 +52,20 @@ public class TherapyService {
   public List<TherapyEntity> getPacientTherapies(final String token, final String pacientId) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    return therapyRepository.findByPacientId(pacientId)
+    return therapyRepository
+        .findByPacientId(pacientId)
         .orElseThrow(() -> new ResourceNotFoundException("Therapies not found!"));
   }
 
   @Transactional
-  public TherapyEntity changeTherapyStatus(final String token, final String pacientId,
-      final Long therapyId, String status) {
+  public TherapyEntity changeTherapyStatus(
+      final String token, final String pacientId, final Long therapyId, String status) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    TherapyEntity therapy = therapyRepository.findByPacientIdAndId(pacientId, therapyId)
-        .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this pacient"));
+    TherapyEntity therapy =
+        therapyRepository
+            .findByPacientIdAndId(pacientId, therapyId)
+            .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this pacient"));
 
     switch (status) {
       case "activate":
@@ -73,20 +77,20 @@ public class TherapyService {
       default:
         throw new ExpectationFailedException("activate / deactivate expected");
     }
-
   }
 
   // Check if "Name" && "Platform" && "Active=True" already exists, if it does, throw error for
   // duplicate entry
-  private void checkDuplicateTherapy(List<TherapyEntity> therapies, String name,
-      PlatformEnum platform) {
-    therapies.forEach(therapy -> {
-      if (therapy.getName().equals(name) && therapy.getPlatform() == platform
-          && therapy.getActive() == Boolean.TRUE) {
-        log.warn("TherapyService, m=addTherapy, e=Duplicate Therapy entry");
-        throw new DuplicateEntryException("Therapy already exists!");
-      }
-    });
+  private void checkDuplicateTherapy(
+      List<TherapyEntity> therapies, String name, PlatformEnum platform) {
+    therapies.forEach(
+        therapy -> {
+          if (therapy.getName().equals(name)
+              && therapy.getPlatform() == platform
+              && therapy.getActive() == Boolean.TRUE) {
+            log.warn("TherapyService, m=addTherapy, e=Duplicate Therapy entry");
+            throw new DuplicateEntryException("Therapy already exists!");
+          }
+        });
   }
-
 }

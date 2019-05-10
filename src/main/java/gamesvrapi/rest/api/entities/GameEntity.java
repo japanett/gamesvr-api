@@ -1,18 +1,5 @@
 package gamesvrapi.rest.api.entities;
 
-import static javax.persistence.EnumType.STRING;
-import static javax.persistence.GenerationType.IDENTITY;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
 import gamesvrapi.rest.api.enums.PlatformEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +8,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Builder
@@ -54,5 +48,4 @@ public class GameEntity {
   @Enumerated(STRING)
   @JoinColumn(name = "platforms")
   private List<PlatformEnum> platforms;
-
 }

@@ -14,5 +14,4 @@ public class PayloadDTO {
   private String id;
 
   private String role;
-
 }

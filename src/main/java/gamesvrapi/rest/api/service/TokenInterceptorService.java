@@ -18,11 +18,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenInterceptorService {
 
-  @Autowired
-  private final TherapistRepository therapistRepository;
+  @Autowired private final TherapistRepository therapistRepository;
 
-  @Autowired
-  private final AdminRepository adminRepository;
+  @Autowired private final AdminRepository adminRepository;
 
   public TherapistEntity translateTherapistToken(final String token) {
 
@@ -35,10 +33,14 @@ public class TokenInterceptorService {
           "Expected role: 'THERAPIST', but got: " + payload.getRole());
     }
 
-    return therapistRepository.findById(id).orElseThrow(() -> {
-      log.warn("TokenInterceptor, m=translateTherapistToken, id : {}, e: ResourceNotFound", id);
-      return new ResourceNotFoundException("No therapist for this token");
-    });
+    return therapistRepository
+        .findById(id)
+        .orElseThrow(
+            () -> {
+              log.warn(
+                  "TokenInterceptor, m=translateTherapistToken, id : {}, e: ResourceNotFound", id);
+              return new ResourceNotFoundException("No therapist for this token");
+            });
   }
 
   public AdminEntity translateAdminToken(final String token) {
@@ -51,10 +53,12 @@ public class TokenInterceptorService {
       throw new ExpectationFailedException("Expected role: 'ADMIN', but got: " + payload.getRole());
     }
 
-    return adminRepository.findById(id).orElseThrow(() -> {
-      log.warn("TokenInterceptor, m=translateAdminToken, id : {}, e: ResourceNotFound", id);
-      return new ResourceNotFoundException("No admin for this token");
-    });
+    return adminRepository
+        .findById(id)
+        .orElseThrow(
+            () -> {
+              log.warn("TokenInterceptor, m=translateAdminToken, id : {}, e: ResourceNotFound", id);
+              return new ResourceNotFoundException("No admin for this token");
+            });
   }
-
 }

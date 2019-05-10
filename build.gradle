@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.3.RELEASE'
-	id 'java'
-	id 'net.ltgt.apt' version '0.20'
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'java'
+    id 'net.ltgt.apt' version '0.20'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -12,37 +12,37 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 compileJava {
-	options.compilerArgs = [
-			'-parameters',
-			'-Amapstruct.defaultComponentModel=spring'
-	]
+    options.compilerArgs = [
+            '-parameters',
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mapstruct:mapstruct-jdk8:1.2.0.Final'
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.hsqldb:hsqldb")
-	compile("com.auth0:java-jwt:3.4.0")
-	compile('javax.xml.bind:jaxb-api:2.3.0')
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'mysql:mysql-connector-java'
-	annotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mapstruct:mapstruct-jdk8:1.2.0.Final'
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.hsqldb:hsqldb")
+    compile("com.auth0:java-jwt:3.4.0")
+    compile('javax.xml.bind:jaxb-api:2.3.0')
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

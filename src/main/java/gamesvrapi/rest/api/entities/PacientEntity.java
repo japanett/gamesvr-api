@@ -1,25 +1,5 @@
 package gamesvrapi.rest.api.entities;
 
-import static javax.persistence.EnumType.STRING;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PacientHandEnum;
 import gamesvrapi.rest.api.enums.SexEnum;
@@ -27,6 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static javax.persistence.EnumType.STRING;
 
 @Data
 @Builder
@@ -102,13 +92,12 @@ public class PacientEntity {
   }
 
   @JsonIgnore
-  public List<TherapyEntity> getTherapies() {
-    return therapies;
-  }
-
-  @JsonIgnore
   public void setTherapist(TherapistEntity therapist) {
     this.therapist = therapist;
   }
 
+  @JsonIgnore
+  public List<TherapyEntity> getTherapies() {
+    return therapies;
+  }
 }

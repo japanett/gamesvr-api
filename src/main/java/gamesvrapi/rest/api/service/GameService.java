@@ -1,7 +1,5 @@
 package gamesvrapi.rest.api.service;
 
-import java.util.Collections;
-import java.util.List;
 import gamesvrapi.rest.api.entities.AdminEntity;
 import gamesvrapi.rest.api.entities.GameEntity;
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
@@ -15,16 +13,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class GameService {
 
-  @Autowired
-  private final TokenInterceptorService tokenInterceptorService;
+  @Autowired private final TokenInterceptorService tokenInterceptorService;
 
-  @Autowired
-  private final GameRepository gameRepository;
+  @Autowired private final GameRepository gameRepository;
 
   public GameEntity create(final String token, final GameEntity game) {
     try {
@@ -49,13 +48,16 @@ public class GameService {
   }
 
   @Transactional
-  public GameEntity updateGamePlatforms(final String token, final Long id,
-      final AddGamePlatformRequest request) {
+  public GameEntity updateGamePlatforms(
+      final String token, final Long id, final AddGamePlatformRequest request) {
 
     final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
-    final GameEntity game = this.gameRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
+    final GameEntity game =
+        this.gameRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
 
     game.setPlatforms(request.getPlatforms());
 
@@ -67,8 +69,11 @@ public class GameService {
 
     final AdminEntity admin = tokenInterceptorService.translateAdminToken(token);
 
-    final GameEntity game = this.gameRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
+    final GameEntity game =
+        this.gameRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Game not found! id: " + id.toString()));
 
     game.setPlatforms(Collections.emptyList());
 

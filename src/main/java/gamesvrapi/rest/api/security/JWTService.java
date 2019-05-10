@@ -1,10 +1,5 @@
 package gamesvrapi.rest.api.security;
 
-import static com.auth0.jwt.JWT.decode;
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static gamesvrapi.rest.api.security.SecurityConstants.EXPIRATION_TIME;
-import static gamesvrapi.rest.api.security.SecurityConstants.SECRET;
-import java.util.Date;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -13,12 +8,20 @@ import gamesvrapi.rest.api.exceptions.EncodeTokenFailedException;
 import gamesvrapi.rest.api.exceptions.ExpiredTokenException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+
+import static com.auth0.jwt.JWT.decode;
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static gamesvrapi.rest.api.security.SecurityConstants.EXPIRATION_TIME;
+import static gamesvrapi.rest.api.security.SecurityConstants.SECRET;
+
 @Slf4j
 public class JWTService {
 
   public static String generateToken(final long id, final String role) {
     try {
-      return JWT.create().withSubject(String.format("%d;%s", id, role))
+      return JWT.create()
+          .withSubject(String.format("%d;%s", id, role))
           .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
           .sign(HMAC512(SECRET.getBytes()));
     } catch (JWTCreationException exception) {
@@ -37,7 +40,9 @@ public class JWTService {
       }
       String tokenSubject = JWT.decode(token).getSubject();
 
-      return PayloadDTO.builder().id(tokenSubject.split(";")[0]).role(tokenSubject.split(";")[1])
+      return PayloadDTO.builder()
+          .id(tokenSubject.split(";")[0])
+          .role(tokenSubject.split(";")[1])
           .build();
 
     } catch (JWTDecodeException exception) {
@@ -45,5 +50,4 @@ public class JWTService {
       throw new EncodeTokenFailedException("Error decoding token!");
     }
   }
-
 }

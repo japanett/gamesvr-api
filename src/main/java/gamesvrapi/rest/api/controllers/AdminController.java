@@ -1,9 +1,6 @@
 package gamesvrapi.rest.api.controllers;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import javax.validation.Valid;
 import gamesvrapi.rest.api.entities.AdminEntity;
-import gamesvrapi.rest.api.mapper.AuthenticationMapper;
 import gamesvrapi.rest.api.service.AdminService;
 import gamesvrapi.rest.api.web.request.LoginRequest;
 import gamesvrapi.rest.api.web.response.AuthenticationResponse;
@@ -12,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @Slf4j
 @RestController
@@ -24,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-  @Autowired
-  private final AdminService adminService;
+  @Autowired private final AdminService adminService;
 
   /*
    * @Autowired private final AuthenticationMapper authMapper;
@@ -34,10 +30,10 @@ public class AdminController {
   @PostMapping(path = "/session", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseStatus(CREATED)
   public AuthenticationResponse newSession(@RequestBody final LoginRequest request) {
-    return null;/*
-                 * this.authMapper.toResponse(this.adminService.newSession( request.getUsername(),
-                 * request.getPassword() ));
-                 */
+    return null; /*
+                  * this.authMapper.toResponse(this.adminService.newSession( request.getUsername(),
+                  * request.getPassword() ));
+                  */
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -45,5 +41,4 @@ public class AdminController {
   public AdminEntity create(@Valid @RequestBody @NonNull final AdminEntity admin) {
     return this.adminService.create(admin);
   }
-
 }

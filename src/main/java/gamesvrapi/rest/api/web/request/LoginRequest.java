@@ -12,10 +12,7 @@ import org.springframework.lang.NonNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
 
-  @NonNull
-  private String username;
+  @NonNull private String username;
 
-  @NonNull
-  private String password;
-
+  @NonNull private String password;
 }

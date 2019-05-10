@@ -1,6 +1,5 @@
 package gamesvrapi.rest.api.service;
 
-import java.util.List;
 import gamesvrapi.rest.api.dto.TokenDTO;
 import gamesvrapi.rest.api.entities.AdminEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
@@ -18,19 +17,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TherapistService {
 
-  @Autowired
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  @Autowired private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Autowired
-  private final TokenInterceptorService tokenInterceptorService;
+  @Autowired private final TokenInterceptorService tokenInterceptorService;
 
-  @Autowired
-  private final TherapistRepository therapistRepository;
+  @Autowired private final TherapistRepository therapistRepository;
 
   public TokenDTO newSession(final String username, final String password) {
     TherapistEntity therapist = therapistRepository.findByUsername(username);
@@ -41,7 +39,8 @@ public class TherapistService {
     } catch (java.lang.NullPointerException exception) {
       throw new ResourceNotFoundException("Therapist username={" + username + "} not found!");
     }
-    return TokenDTO.builder().japanetToken(JWTService.generateToken(therapist.getId(), "THERAPIST"))
+    return TokenDTO.builder()
+        .japanetToken(JWTService.generateToken(therapist.getId(), "THERAPIST"))
         .build();
   }
 
@@ -85,5 +84,4 @@ public class TherapistService {
     }
     return therapists;
   }
-
 }

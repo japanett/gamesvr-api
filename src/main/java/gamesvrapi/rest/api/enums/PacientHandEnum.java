@@ -1,7 +1,9 @@
 package gamesvrapi.rest.api.enums;
 
 public enum PacientHandEnum {
-  LEFT(1, "Mão esquerda"), RIGHT(2, "Mão direita"), ALTERNATED(3, "Mão alternada");
+  LEFT(1, "Mão esquerda"),
+  RIGHT(2, "Mão direita"),
+  ALTERNATED(3, "Mão alternada");
 
   private final String description;
 

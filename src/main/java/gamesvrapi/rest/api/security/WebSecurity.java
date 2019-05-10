@@ -15,15 +15,29 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/api/**")
-        .permitAll().antMatchers(HttpMethod.PUT, "/api/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.PATCH, "/api/**")
-        .permitAll().antMatchers(HttpMethod.DELETE, "/api/**").permitAll().anyRequest()
-        .authenticated().and()
+    http.cors()
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/api/**")
+        .permitAll()
+        .antMatchers(HttpMethod.PUT, "/api/**")
+        .permitAll()
+        .antMatchers(HttpMethod.GET, "/api/**")
+        .permitAll()
+        .antMatchers(HttpMethod.PATCH, "/api/**")
+        .permitAll()
+        .antMatchers(HttpMethod.DELETE, "/api/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
         // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
         // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
         // this disables session creation on Spring Security
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
   @Bean

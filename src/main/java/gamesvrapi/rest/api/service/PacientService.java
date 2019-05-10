@@ -1,12 +1,5 @@
 package gamesvrapi.rest.api.service;
 
-import java.util.List;
-import java.util.UUID;
-import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import gamesvrapi.rest.api.dto.PacientPerformanceDTO;
 import gamesvrapi.rest.api.entities.PacientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
@@ -14,17 +7,23 @@ import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.repository.PacientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PacientService {
 
-  @Autowired
-  private final TokenInterceptorService tokenInterceptorService;
+  @Autowired private final TokenInterceptorService tokenInterceptorService;
 
-  @Autowired
-  private final PacientRepository pacientRepository;
+  @Autowired private final PacientRepository pacientRepository;
 
   @Transactional
   public PacientEntity create(final String token, final PacientEntity Pacient) {
@@ -43,8 +42,10 @@ public class PacientService {
 
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity updatedPacient = pacientRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
+    PacientEntity updatedPacient =
+        pacientRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
 
     updatedPacient.setAge(Pacient.getAge());
     updatedPacient.setDominantHand(Pacient.getDominantHand());
@@ -62,8 +63,10 @@ public class PacientService {
   public PacientEntity delete(String token, String id) {
     TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
 
-    PacientEntity Pacient = pacientRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
+    PacientEntity Pacient =
+        pacientRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Pacient not found!"));
 
     pacientRepository.delete(Pacient);
     return Pacient;
@@ -85,15 +88,17 @@ public class PacientService {
 
   private String generateId() {
     String id = (UUID.randomUUID().toString().substring(0, 6));
-    pacientRepository.findById(id).ifPresent(entity -> {
-      this.generateId();
-    });
+    pacientRepository
+        .findById(id)
+        .ifPresent(
+            entity -> {
+              this.generateId();
+            });
     return id;
   }
 
   public List<PacientPerformanceDTO> getPacientPerformance(@Valid String token, String id) {
     List<PacientEntity> Pacients = getPacientsByFilter(token, id);
     return null;
-
   }
 }
