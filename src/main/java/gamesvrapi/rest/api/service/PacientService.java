@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,6 +100,6 @@ public class PacientService {
 
   public List<PacientPerformanceDTO> getPacientPerformance(@Valid String token, String id) {
     List<PacientEntity> Pacients = getPacientsByFilter(token, id);
-    return null;
+    return new ArrayList<>();
   }
 }
