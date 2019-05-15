@@ -105,11 +105,6 @@ public class PatientEntity {
     }
 
     @JsonIgnore
-    public List<TherapyEntity> getTherapies () {
-        return therapies;
-    }
-
-    @JsonIgnore
     public void setTherapist (TherapistEntity therapist) {
         this.therapist = therapist;
     }

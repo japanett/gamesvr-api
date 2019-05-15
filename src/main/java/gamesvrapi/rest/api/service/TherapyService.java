@@ -3,11 +3,13 @@ package gamesvrapi.rest.api.service;
 import java.util.List;
 
 import gamesvrapi.rest.api.entities.PatientEntity;
+import gamesvrapi.rest.api.entities.StageEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
 import gamesvrapi.rest.api.entities.TherapyEntity;
 import gamesvrapi.rest.api.enums.PlatformEnum;
 import gamesvrapi.rest.api.exceptions.DuplicateEntryException;
 import gamesvrapi.rest.api.exceptions.ExpectationFailedException;
+import gamesvrapi.rest.api.exceptions.NotAllowedException;
 import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.repository.PatientRepository;
 import gamesvrapi.rest.api.repository.TherapyRepository;
@@ -78,6 +80,25 @@ public class TherapyService {
 
     }
 
+    @Transactional
+    public TherapyEntity setStage (final String token, final String patientId, final Long therapyId, final StageEntity stage) {
+        TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
+
+        TherapyEntity therapy = therapyRepository.findByPatientIdAndId(patientId, therapyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Therapy not found for this patient"));
+
+        if (therapy.getActive().equals(Boolean.FALSE)) {
+            throw new NotAllowedException("This therapy is deactivated");
+        }
+        List<StageEntity> stages = therapy.getStages();
+        stage.setStep(stages.size() + 1);
+        stage.setTherapy(therapy);
+        stages.add(stage);
+
+        therapy.setStages(stages);
+        return therapyRepository.save(therapy);
+    }
+
     // Check if "Name" && "Platform" && "Active=True" already exists, if it does, throw error for duplicate entry
     private void checkDuplicateTherapy (List<TherapyEntity> therapies, String name, PlatformEnum platform) {
         therapies.forEach(therapy -> {
@@ -89,5 +110,4 @@ public class TherapyService {
             }
         });
     }
-
 }

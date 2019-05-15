@@ -3,9 +3,9 @@ package gamesvrapi.rest.api.service;
 import java.util.List;
 import java.util.UUID;
 
-import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.entities.PatientEntity;
 import gamesvrapi.rest.api.entities.TherapistEntity;
+import gamesvrapi.rest.api.exceptions.ResourceNotFoundException;
 import gamesvrapi.rest.api.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,13 +71,21 @@ public class PatientService {
 
     public List<PatientEntity> getPatientsByFilter (final String token, final String patientId) {
         TherapistEntity therapist = tokenInterceptorService.translateTherapistToken(token);
-
-        var entity = PatientEntity.builder()
+//        log.info("therapist: {}", therapist);
+        log.info("===========");
+        log.info(therapist.getEmail());
+        PatientEntity entity = PatientEntity.builder()
                 .id(patientId)
                 .therapist(therapist)
                 .build();
 
         List<PatientEntity> patientList = patientRepository.findAll(Example.of(entity));
+        // TODO ADiciona um breakpoint aqui e ve o pq o erro ta estorando no terapist
+        //        Optional<List<TherapyEntity>> patientList2 = patientRepository.findAll(Example.of(entity))
+        //                .stream()
+        //                .findFirst()
+        //                .filter(x -> !x.getTherapies().isEmpty())
+        //                .map(x ->  x.getTherapies());
 
         if (patientList.isEmpty()) {
             throw new ResourceNotFoundException("No patient found!");

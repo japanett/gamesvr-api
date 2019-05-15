@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gamesvrapi.rest.api.enums.PatientHandEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,5 +43,8 @@ public class StageEntity {
 
     @Column(name = "hand", nullable = false)
     private PatientHandEnum handEnum;
+
+    @JsonIgnore
+    public TherapyEntity getTherapy () { return therapy; }
 
 }
